@@ -353,3 +353,6 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/pycharm,visualstudiocode,python,venv,virtualenv,windows,linux,dotenv,cuda
+
+# Custom .gitignore
+/.ikt590_virtualenv
