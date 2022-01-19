@@ -356,3 +356,4 @@ $RECYCLE.BIN/
 
 # Custom .gitignore
 /.ikt590_virtualenv
+/.logs
