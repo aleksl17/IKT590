@@ -12,12 +12,11 @@ def import_data(saveLocal=True):
     logging.getLogger(__name__)
 
     # Variables
-    currentTime = str(int(time.time()))
     if not saveLocal:
         returnData = numpy.array([])
 
     # Read signals.json
-    with open('./testsignals.json') as file:
+    with open('./signals.json') as file:
         signalsData = json.load(file)
     
     # Save or return signal data
@@ -33,8 +32,8 @@ def import_data(saveLocal=True):
         if saveLocal:
             if not os.path.exists('./.localData'):
                 os.makedirs('./.localData')
-            with open(f'./.localData/{signal}_{currentTime}.csv', 'w') as file:
-                file.write(csvData)
+            with open(f'./.localData/{signal}.csv', 'w') as file:
+                file.write(csvData) 
         else:
             returnData = numpy.append(returnData, csvData)
     

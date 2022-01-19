@@ -3,6 +3,7 @@ import time
 import os
 
 import import_data
+import data_manipulation
 
 
 def main():
@@ -15,11 +16,15 @@ def main():
     
     logging.info('Started')
     ################ ======== Functions/code goes below here ======== ################
-
-    # import_data.import_data(dataDirectory='.tdata')
-    data = import_data.import_data()
-    print(data)
-
+    
+    # Download data via API if .localData folder is empty
+    if not os.listdir('./.localData'):
+        import_data.import_data()
+    
+    # Create dataset from local data files
+    for file in os.listdir('./.localData'):
+        data_manipulation.manipulate_data(data=file)
+    
     ################ ======== Functions/code goes above here ======== ################
     logging.info('Finished')
 
