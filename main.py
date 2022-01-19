@@ -2,7 +2,7 @@ import logging
 import time
 import os
 
-import data_manipulation
+import import_data
 
 
 def main():
@@ -16,7 +16,8 @@ def main():
     logging.info('Started')
     ################ ======== Functions/code goes below here ======== ################
 
-    data_manipulation.import_local_data(dataDirectory='.tdata')
+    # import_data.import_data(dataDirectory='.tdata')
+    import_data.import_data()
 
     ################ ======== Functions/code goes above here ======== ################
     logging.info('Finished')
