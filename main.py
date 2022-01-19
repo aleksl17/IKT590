@@ -17,7 +17,8 @@ def main():
     ################ ======== Functions/code goes below here ======== ################
 
     # import_data.import_data(dataDirectory='.tdata')
-    import_data.import_data()
+    data = import_data.import_data()
+    print(data)
 
     ################ ======== Functions/code goes above here ======== ################
     logging.info('Finished')
