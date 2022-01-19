@@ -1,5 +1,5 @@
+import pandas
 
-def manipulate_data(data, interval=1440):
-    print('im ere')
-    print(data)
-    print(interval)
+def manipulate_data(file, interval=1440):
+    data = pandas.read_csv(file)
+    
