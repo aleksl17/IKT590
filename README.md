@@ -17,7 +17,7 @@ Lag et virtualenv i `IKT590` git folderen med kommandoen `virtualenv .ikt590_vir
 
 Åpne terminal of your choice og naviger til `IKT590` folderen. Skriv `.\.ikt590_virtualenv\Script\activate`
 
-Obs, den operasjonen krever mest sannsynelig endring i execution policy. Kjør `Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope CurrentUser` eller [les mer her].(https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_execution_policies)
+Obs, den operasjonen krever mest sannsynelig endring i execution policy. Kjør `Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope CurrentUser` eller [les mer her.](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_execution_policies)
 
 Når du er i virtualenv kjør `python -m pip install -r requirements.txt`
 
