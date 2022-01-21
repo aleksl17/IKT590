@@ -15,7 +15,7 @@ Lag et virtualenv i `IKT590` git folderen med kommandoen `virtualenv .ikt590_vir
 
 (".ikt590..." er virtualenv navnet. Kan kalles noe annet, men da må man legge til det i .gitignore)
 
-Åpne terminal of your choice og naviger til `IKT590` folderen. Skriv `.\.ikt590_virtualenv\Script\activate`
+Åpne terminal of your choice og naviger til `IKT590` folderen. Skriv `.\.ikt590_virtualenv\Scripts\activate`
 
 Obs, den operasjonen krever mest sannsynelig endring i execution policy. Kjør `Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope CurrentUser` eller [les mer her.](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_execution_policies)
 
