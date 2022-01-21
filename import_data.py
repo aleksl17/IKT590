@@ -6,6 +6,9 @@ import json
 import os
 import io
 
+# TODO:
+# Remove non-temperature soruce IDs. See "MariuysInterpolation.py"
+
 
 def import_data(signalFrom="", signalTo="", signalsFile='./testsignals.json', saveDirectory="./.localData", saveLocal=True, override=False):
     """Fetches data via API and saves locally or returns list of strings"""
@@ -50,7 +53,7 @@ def import_data(signalFrom="", signalTo="", signalsFile='./testsignals.json', sa
 
     # Save or return signal data
     for signal in signalsData:
-        csvData = "timestamp, value\n"
+        csvData = "timestamp,value\n"
         url=f'https://signalapi.bmesh.io/api/sevents/entity/{signal}'
         # "from" and "to" parameter URL constructing logic 
         if signalFrom or signalTo:
@@ -67,7 +70,7 @@ def import_data(signalFrom="", signalTo="", signalsFile='./testsignals.json', sa
         rawData = r.json()
         # Create csv data string from parsed JSON
         for data in rawData:
-            csvData += f"{data['timestamp']}, {data['value']}\n"
+            csvData += f"{data['timestamp'][:-1]},{data['value']}\n"
         # Save data locally or append to numpy array
         if saveLocal:
             with open(f'{saveDirectory}/{signal}.csv', 'w') as file:
