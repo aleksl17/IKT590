@@ -5,6 +5,14 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Python: K-means main",
+            "type": "python",
+            "request": "launch",
+            "program": "./TSKMeans/KMeans_main.py",
+            "console": "integratedTerminal",
+            "python.defaultInterpreterPath": "%USERPROFILE%/IKT590/.ikt590_virtualenv/Scripts/python.exe"
+        },
+        {
             "name": "Python: main",
             "type": "python",
             "request": "launch",
