@@ -77,7 +77,7 @@ def main():
     cluster_centers = []
     x_train = np.asarray(dataset)
 
-    for k in range(2,3):
+    for k in range(2,10):
         sil_score, cluster_center = kMeans(x_train, k, metric='softdtw', plot=True)
         sil_scores.append(sil_score)
         cluster_centers.append(cluster_center)
