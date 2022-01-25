@@ -1,4 +1,5 @@
 import logging
+import random
 import pandas
 import time
 import math
@@ -11,8 +12,10 @@ import numpy as np
 
 import interpolate
 
+currentTime = str(int(time.time()))
+
 def kMeans(data, clusters, metric='dtw', plot=False, saveDirectory="./.figs"):
-    currentTime = str(int(time.time()))
+    # currentTime = str(int(time.time()))
     sz = data.shape[1]
     data = data[:100]
     model = TimeSeriesKMeans(n_clusters=clusters,
@@ -56,7 +59,7 @@ def main():
     # Initialize logging
     if not os.path.exists('./.logs'):
         os.makedirs('./.logs')
-    currentTime = str(int(time.time()))
+    # currentTime = str(int(time.time()))
     logFile = os.path.join('./.logs/' + currentTime + '.log')
     logging.basicConfig(filename=logFile, format='%(asctime)s %(levelname)s %(name)-8s %(message)s', datefmt='%Y-%m-%d %H:%M:%S', level=logging.DEBUG)
     
@@ -68,21 +71,29 @@ def main():
         csvData = pandas.read_csv(f"./.localData/{filename}")
         # print(csvData)
         data = interpolate.interpolation(csvData)
-        for i in range(math.floor(len(data)/sample_size)):
-            dataset.append(data[i*sample_size:(i+1)*sample_size])
+        # for i in range(math.floor(len(data)/sample_size)):
+        #     dataset.append(data[i*sample_size:(i+1)*sample_size])
+        for i in range(len(data)-sample_size):
+            dataset.append(data[i:i + sample_size])
 
     print('Hello, World!')
+
+    dataset = random.sample(dataset, 10000)
 
     sil_scores = []
     cluster_centers = []
     x_train = np.asarray(dataset)
 
-    for k in range(2,5):
+    for k in range(2,10):
         sil_score, cluster_center = kMeans(x_train, k, metric='softdtw', plot=True)
         sil_scores.append(sil_score)
         cluster_centers.append(cluster_center)
+        plt.clf()
+        for c in cluster_center:
+            plt.plot(c)
+        plt.savefig(f'./.figs/clusters_K_{k}_{currentTime}')
 
-    plt.clf()
+    plt.clf()   
     plt.plot(sil_scores)
     plt.savefig(f'./.figs/sil_score_{currentTime}')
     # plt.show()  
