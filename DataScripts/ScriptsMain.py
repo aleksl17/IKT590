@@ -2,8 +2,8 @@ import logging
 import time
 import os
 
-import import_data
-import data_manipulation
+from . import data_import
+from . import data_manipulation
 
 
 def main():
@@ -19,7 +19,7 @@ def main():
     
     # Download data via API if .localData folder is empty
     # import_data.import_data(signalFrom="2021-01-01T01:00:00.000Z", signalTo="2022-01-01T01:00:00.000Z")
-    idd = import_data.import_data()
+    idd = data_import.import_data()
     print(idd)
 
     # Create dataset from local data files

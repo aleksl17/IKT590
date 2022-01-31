@@ -9,10 +9,17 @@ from tslearn.clustering import TimeSeriesKMeans, silhouette_score
 from tslearn.datasets import CachedDatasets, UCR_UEA_datasets
 from tslearn.preprocessing import TimeSeriesScalerMeanVariance, TimeSeriesResampler
 import numpy as np
+import sys
 
-import interpolate
+# TODO: Fix this \/
+# WIP, må være bedre måte å gjøre intra-project package iomport på.
+# sys.path.insert i alle mains ser for dumt ut.
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+import DataScripts
 
+# CurrentTime is global. Bad practice spotted alarm. >:( *insert alarm sound here*
 currentTime = str(int(time.time()))
+
 
 def kMeans(data, clusters, metric='dtw', plot=False, saveDirectory="./.figs"):
     # currentTime = str(int(time.time()))
@@ -70,7 +77,7 @@ def main():
     for filename in os.listdir('./.localData'):
         csvData = pandas.read_csv(f"./.localData/{filename}")
         # print(csvData)
-        data = interpolate.interpolation(csvData)
+        data = DataScripts.interpolation(csvData)
         # for i in range(math.floor(len(data)/sample_size)):
         #     dataset.append(data[i*sample_size:(i+1)*sample_size])
         for i in range(len(data)-sample_size):
