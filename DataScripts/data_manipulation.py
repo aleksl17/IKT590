@@ -2,7 +2,7 @@ import logging
 import pandas
 import numpy
 
-import interpolate
+from . import interpolate
 
 
 def manipulate_data(file, interval=1440):
@@ -19,7 +19,6 @@ def manipulate_data(file, interval=1440):
     print(data)
     print(type(data))
 
-    interpolate.interpolate(data)
+    interpolate.interpolation(data)
 
     print(data)
-    
