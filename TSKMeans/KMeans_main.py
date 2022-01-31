@@ -19,6 +19,9 @@ import DataScripts
 
 # CurrentTime is global. Bad practice spotted alarm. >:( *insert alarm sound here*
 currentTime = str(int(time.time()))
+# Suggestion: Put "KMeans" function inside "main" function. Then currentTime can be "inherrited".
+# Treat the inside of the "main" function as if the py file was empty.
+# "if __name__... main()" is to contain runaway global variables.
 
 
 def kMeans(data, clusters, metric='dtw', plot=False, saveDirectory="./.figs"):
