@@ -23,6 +23,7 @@ def manipulate_data(csvDirectory='./.localData', interval=1440):
         csvData = pandas.read_csv(os.path.join(csvDirectory, file))
         dataList.append(csvData)
 
+    # TODO: move code into one loop, the loop above
     for listData in dataList:
         interpolatedData = data_interpolate.interpolation(listData)
         new_y.append(interpolatedData)
