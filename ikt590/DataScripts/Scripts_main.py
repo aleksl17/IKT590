@@ -2,8 +2,8 @@ import logging
 import time
 import os
 
-from . import data_import
-from . import data_manipulation
+import data_import
+import data_manipulation
 
 
 def main():
