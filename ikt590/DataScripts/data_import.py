@@ -6,9 +6,6 @@ import json
 import os
 import io
 
-# TODO:
-# Remove non-temperature soruce IDs. See "MariuysInterpolation.py"
-
 
 def import_data(signalFrom="", signalTo="", signalsFile='./testsignals.json', saveDirectory="./.localData", saveLocal=True, override=False):
     """Fetches data via API and saves locally or returns list of strings"""
@@ -17,7 +14,6 @@ def import_data(signalFrom="", signalTo="", signalsFile='./testsignals.json', sa
     logger = logging.getLogger(__name__)
     
     if saveLocal:
-        print(saveLocal)
         # Create appropriate directories
         try:
             os.listdir(saveDirectory)
@@ -36,7 +32,6 @@ def import_data(signalFrom="", signalTo="", signalsFile='./testsignals.json', sa
     elif not saveLocal:
         # Variables
         returnData = numpy.array([])
-        print('here1')
 
     # Read signals.json
     try:
