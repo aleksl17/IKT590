@@ -69,7 +69,8 @@ def import_data(signalFrom="", signalTo="", signalsFile='./testsignals.json', sa
         rawData = r.json()
         # Create csv data string from parsed JSON
         for data in rawData:
-            if not data['SourceID'].split("/")[-1] == "hu":
+            # Only appends temperature
+            if data['type'] == "VEvent" and not data['sourceId'].split("/")[-1] == "hu":
                 csvData += f"{data['timestamp'][:-1]},{data['value']}\n"
         # Save data locally or append to numpy array
         if saveLocal:
@@ -77,10 +78,6 @@ def import_data(signalFrom="", signalTo="", signalsFile='./testsignals.json', sa
                 file.write(csvData)
                 logger.info(f"Wrote file: \"{signal}.csv\"")
         else:
-            # returnData = numpy.append(returnData, csvData)
-            # print(returnData)
-            # returnDataDF = pandas.DataFrame(data=returnData)
-            # print('here2')
             returnDataDF = pandas.read_csv(io.StringIO(csvData), sep=',')
             returnData = numpy.append(returnData, returnDataDF)
 
