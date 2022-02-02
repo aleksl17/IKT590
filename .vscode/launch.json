@@ -8,15 +8,15 @@
             "name": "Python: K-means main",
             "type": "python",
             "request": "launch",
-            "program": "./TSKMeans/KMeans_main.py",
+            "program": "./ikt590/KMeans_main.py",
             "console": "integratedTerminal",
             "python.defaultInterpreterPath": "%USERPROFILE%/IKT590/.ikt590_virtualenv/Scripts/python.exe"
         },
         {
-            "name": "Python: main",
+            "name": "Python: Scripts main",
             "type": "python",
             "request": "launch",
-            "program": "main.py",
+            "program": "./ikt590/DataScripts/Scripts_main.py",
             "console": "integratedTerminal",
             "python.defaultInterpreterPath": "%USERPROFILE%/IKT590/.ikt590_virtualenv/Scripts/python.exe"
         },

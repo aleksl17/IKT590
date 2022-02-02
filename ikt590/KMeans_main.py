@@ -11,12 +11,13 @@ from tslearn.preprocessing import TimeSeriesScalerMeanVariance, TimeSeriesResamp
 import numpy as np
 import sys
 
-import DataScripts.interpolate as interpolate
+import DataScripts.data_interpolate as interpolate
 
 # TODO:
 # Remove unused imports
 # Remove unused code
 # Team Review
+
 
 def main():
     # Initialize logging
