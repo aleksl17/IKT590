@@ -1,15 +1,18 @@
+import imp
 from keras.models import load_model
+import DataScripts.data_interpolate as interpolate
 import matplotlib.pyplot as plt
 import tensorflow as tf
 import numpy as np
 import random
 import pandas
+import time
 import sys
 import os
 
 
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-import DataScripts
+# sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+# import DataScripts
 
 #get data
 dataset = []
@@ -17,7 +20,7 @@ sample_size = 40
 
 for filename in os.listdir('./.localData'):
     csvData = pandas.read_csv(f"./.localData/{filename}")
-    data = DataScripts.interpolation(csvData)
+    data = interpolate.interpolation(csvData)
     for i in range(len(data)-sample_size):
         dataset.append(data[i:i + sample_size])
 
@@ -38,6 +41,10 @@ model.build()
 reduced_dims = model.predict(x)
 
 print(reduced_dims[:10])
+
+#save
+currentTime = str(int(time.time()))
+np.save(f'reducedDims/autoencoder/{currentTime}', reduced_dims)
 
 ax = plt.axes(projection='3d')
 for point in reduced_dims:
