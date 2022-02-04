@@ -41,4 +41,5 @@ def interpolation(data, sample_length = 15*60):
     new_y = f(new_x)
     logger.debug(f"Length of new y: {len(new_y)}")
 
+    # return new_x, new_y
     return new_y
