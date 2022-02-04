@@ -24,7 +24,7 @@ for filename in os.listdir('./.localData'):
         dataset.append(data[i:i + sample_size])
 
 
-dataset = random.sample(dataset, 10000)
+dataset = random.sample(dataset, 1000)
 dataset = np.asarray(dataset)
 
 x = []
@@ -47,10 +47,10 @@ model = Sequential()
 model.add(encoder)
 model.add(decoder)
 
-model.compile(optimizer='adam', loss='mae')
+model.compile(optimizer='adam', loss='mse')
 
-# history = model.fit(x.reshape(x.shape[0], x.shape[1], 1),x, epochs=100, shuffle=True)
-history = model.fit(x,x, epochs=1000, shuffle=True)
+history = model.fit(x.reshape(x.shape[0], x.shape[1], 1),x, epochs=10000, shuffle=True)
+# history = model.fit(x,x, epochs=10000, shuffle=True)
 
 plt.plot(history.history['loss'])
 plt.show()
@@ -63,3 +63,5 @@ for i in range(len(x_test)):
     plt.plot(pred[i], color='b')
     plt.show()
 
+model.save('autoencoder/model')
+encoder.save('autoencoder/encoder')
