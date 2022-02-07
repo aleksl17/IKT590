@@ -13,16 +13,17 @@ import data_interpolate
 #   [2022-02-02:12:34:45, 9.9, 5.4, 7.1, ... ]
 #   ]
 
-def manipulate_data(csvDirectory='./.localData', interval="24H", interpolate=False):
+def manipulate_data(csvDirectory='./.localData', sample_size=40, interpolate=True):
     """Manipulates data"""
     
     # Initalize logger
     logger = logging.getLogger(__name__)
     
     # Variables
-    dataList = []
-    x = numpy.array([])
-    y = numpy.array([])
+    datasetList = numpy.array([])
+    dataset = numpy.array([])
+    # x = numpy.array([])
+    # y = numpy.array([])
 
     # Creates list of DataFrames from data from CSV files in csvDirectory
     for file in os.listdir(csvDirectory):
@@ -31,7 +32,10 @@ def manipulate_data(csvDirectory='./.localData', interval="24H", interpolate=Fal
         # csvData['Datetime']
         if interpolate:
             csvData = data_interpolate.interpolation(csvData)
-        print(csvData['value'].values)
+        
+        for set in range(len(csvData)-sample_size):
+            print(set)
+            numpy.append(dataset, csvData[set:set+sample_size])
 
         # How to convert Pandas DataFrame to Pandas Series. Might not be needed here, but good to know how.
         # Requires "timestamp" to be DateTime and not string.
@@ -44,7 +48,9 @@ def manipulate_data(csvDirectory='./.localData', interval="24H", interpolate=Fal
         # csvData = csvData.groupby(pandas.Grouper(key='timestamp', freq='1D'))
         # print(csvData)
         
-        dataList.append(csvData)
+        numpy.append(datasetList, dataset)
+    
+print(manipulate_data())
     
     
 
