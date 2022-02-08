@@ -23,8 +23,8 @@ def main():
     # print(idd)
 
     # Create dataset from local data files
-    # dmc = data_manipulation.create_dataset()
-    # print(dmc)
+    dmc = data_manipulation.create_dataset()
+    print(dmc)
 
     # Read dataset from local dataset files
     # dmr = data_manipulation.read_dataset()
