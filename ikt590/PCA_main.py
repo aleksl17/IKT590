@@ -4,11 +4,13 @@ from sklearn.decomposition import PCA
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
-import interpolate
 import random
 import pandas
 import time
 import os
+
+import DataScripts.data_interpolate as interpolate
+
 
 def reduce(x, n_components = 2):
     pca = PCA(n_components)
