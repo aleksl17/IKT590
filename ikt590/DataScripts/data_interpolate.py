@@ -20,7 +20,10 @@ def interpolation(data, sample_length = 15*60):
     logger.debug(f"Interval total seconds: {interval.total_seconds()}")
 
     # Calculate samples based on total dataset length and desired sample length
-    samples = math.floor(interval.total_seconds()/sample_length)
+    # samples = math.floor(interval.total_seconds()/sample_length)
+    
+    # Sets samples to be the same amount of original dataset
+    samples = len(data)
     logger.debug(f"Samples: {samples}")
 
     # Convert timestamp to total seconds of x
