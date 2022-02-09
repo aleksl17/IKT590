@@ -31,8 +31,8 @@ def main():
             kmeans.fit(x0)
             return kmeans.predict(x)
     
-    def cluster(x, algorithm, k = 3, figDir='./.figs/'):
-        logger.debug(f'Kmeans for {algorithm}')
+    def cluster(x, reduction, k = 3, figDir='./.figs/'):
+        logger.debug(f'Kmeans for {reduction}')
         kmeans_pred = kMeans(x,k, False)
 
         colors = ['r','b','g']
@@ -42,10 +42,9 @@ def main():
             ax.scatter3D(point[0], point[1], point[2], color=colors[c])
         
         logger.debug("Loading Figure")
-        plt.title(f'K-Means on {algorithm}')
-        plt.savefig(os.path.join(figDir + algorithm + '-' + currentTime))
+        plt.title(f'K-Means on {reduction}')
+        plt.savefig(os.path.join(figDir + "KMeans-" + reduction + '-' + currentTime))
         plt.clf()
-        # plt.show()
 
         return kmeans_pred
     
