@@ -19,14 +19,12 @@ def main():
     logging.basicConfig(filename=logFile, format='%(asctime)s %(levelname)s %(name)-8s %(message)s', datefmt='%Y-%m-%d %H:%M:%S', level=logging.DEBUG)
     logger = logging.getLogger(__name__)
 
-    print("Hello, World!")
-
     def dbscan(x):
         dbscan = DBSCAN(eps=0.5, min_samples=5)
         # x0 = random.sample(x, 1000)
         # dbscan.fit(x0)
         return dbscan.fit_predict(x)
-
+    
     def cluster(x, reduction, k = 3, figDir='./.figs/'):
         logger.debug(f'Kmeans for {reduction}')
         dbscan_pred = dbscan(x)
