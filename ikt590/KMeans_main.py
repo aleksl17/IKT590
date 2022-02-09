@@ -66,7 +66,7 @@ def main():
     xSOM = np.load('reducedDims/som/1644406419.npy').tolist()
     xSOM = random.sample(xSOM, 10000)
     SOM_pred  = cluster(xSOM, 'SOM', k=3)
-
+    
 
 if __name__ == "__main__":
     main()
