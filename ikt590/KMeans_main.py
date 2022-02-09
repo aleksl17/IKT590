@@ -6,8 +6,6 @@ import logging
 import time
 import os
 
-import DataScripts.data_manipulation as data_manipulation
-
 
 def main():
     # Initialize logging
@@ -33,7 +31,7 @@ def main():
             kmeans.fit(x0)
             return kmeans.predict(x)
     
-    def cluster(x, algorithm, k = 3):
+    def cluster(x, algorithm, k = 3, figDir='./.figs/'):
         logger.debug(f'Kmeans for {algorithm}')
         kmeans_pred = kMeans(x,k, False)
 
@@ -45,17 +43,28 @@ def main():
         
         logger.debug("Loading Figure")
         plt.title(f'K-Means on {algorithm}')
-        plt.show()
+        plt.savefig(os.path.join(figDir + algorithm + '-' + currentTime))
+        plt.clf()
+        # plt.show()
     
-    x = np.load('reducedDims/pca/1644398105.npy').tolist()
-    x = random.sample(x, 10000)
-    print(x)
 
-    cluster(x, 'pca', k=3)
+    #PCA
+    logging.info('Staging PCA')
+    xPCA = np.load('reducedDims/pca/1644398105.npy').tolist()
+    xPCA = random.sample(xPCA, 10000)
+    cluster(xPCA, 'pca', k=3)
     
-    
-    print("Hello, World!")
+    #Autoencoder
+    logging.info('Staging AE')
+    xAE = np.load('reducedDims/autoencoder/1644405844.npy').tolist()
+    xAE = random.sample(xAE, 10000)
+    cluster(xAE, 'autoencoder', k=3)
 
+    #SOM
+    logging.info('Staging SOM')
+    xSOM = np.load('reducedDims/som/1644406419.npy').tolist()
+    xSOM = random.sample(xSOM, 10000)
+    cluster(xSOM, 'SOM', k=3)
 
 
 if __name__ == "__main__":

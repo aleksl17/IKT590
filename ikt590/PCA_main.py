@@ -13,38 +13,6 @@ import os
 import DataScripts.data_manipulation as data_manipulation
 
 
-def reduce(x, n_components = 2):
-    pca = PCA(n_components)
-    pca = pca.fit(x)
-    pc = pca.transform(x)
-    return pc
-
-# def data():
-#     datasetList = []
-#     # sample_size = 24 * 4
-#     # for filename in os.listdir('./.localData'):
-#     #     csvData = pandas.read_csv(f"./.localData/{filename}")
-#     #     data = interpolate.interpolation(csvData)
-#     #     for i in range(len(data)-sample_size):
-#     #         dataset.append(data[i:i + sample_size])
-#     x = []
-#     meta = []
-#     datasetList = data_manipulation.read_dataset(datasetFile='./.dataset/dataset-1644394453.json')
-#     for sensorItem in datasetList:
-#         #dataset.append(sensorItem[1]) #[1] sample values
-#         for sample in sensorItem[1]: # [1] samples, [0] metadata
-#             x.append(sample)
-#     for sensorItem in datasetList:
-#         for sample in sensorItem[1]:
-#             x.append(sample)
-#         for m in sensorItem[0]:
-#             meta.append(m)
-#     x, meta = GetData()
-    # dataset = random.sample(dataset, 100)
-    # logger.debug(dataset)
-    # x = np.asarray(dataset)
-    # return x
-
 def main():
     # Initialize logging
     if not os.path.exists('./.logs'):
@@ -53,6 +21,12 @@ def main():
     logFile = os.path.join('./.logs/' + currentTime + '.log')
     logging.basicConfig(filename=logFile, format='%(asctime)s %(levelname)s %(name)-8s %(message)s', datefmt='%Y-%m-%d %H:%M:%S', level=logging.DEBUG)
     logger = logging.getLogger(__name__)
+
+    def reduce(xRed, n_components = 2):
+        pca = PCA(n_components)
+        pca = pca.fit(xRed)
+        pc = pca.transform(xRed)
+        return pc
 
     if not os.path.exists('reducedDims/pca'):
         os.makedirs('reducedDims/pca')

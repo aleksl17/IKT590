@@ -6,42 +6,30 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 import DataScripts.data_interpolate as interpolate
+import DataScripts.data_manipulation as data_manipulation
 import random
 import pandas
 import time
 import os
 
-def reduce(x):
-    som = SOM(m=3, n=1, dim=40)
-    #som.fit(x)
-    som.fit(x, epochs=1, shuffle=True)
-    transformed = som.transform(x)
-
-    return transformed
-
-
-def data():
-    dataset = []
-    sample_size = 40
-
-    for filename in os.listdir('./.localData'):
-        csvData = pandas.read_csv(f"./.localData/{filename}")
-        data = interpolate.interpolation(csvData)
-        for i in range(len(data)-sample_size):
-            dataset.append(data[i:i + sample_size])
-
-
-    dataset = random.sample(dataset, 100)
-    x = np.asarray(dataset)
-
-    return x
-
 
 def main():
+
+    def reduce(xRed):
+        som = SOM(m=3, n=1, dim=40)
+        #som.fit(x)
+        som.fit(xRed, epochs=1, shuffle=True)
+        transformed = som.transform(xRed)
+        return transformed
+    
     dims = 3
 
+    meta, dataset = data_manipulation.read_dataset(datasetFile='./.dataset/dataset-1644397269.json')
+    dataset = random.sample(dataset, 10000)
+    x = np.asarray(dataset)
+
     currentTime = str(int(time.time()))
-    x = data()
+    # x = data()
 
     x = StandardScaler().fit_transform(x)
     som = reduce(x)
@@ -55,9 +43,9 @@ def main():
 
     if not os.path.exists('results'):
         os.makedirs('results')
-    plt.savefig(f'results/somResults/som_{currentTime}')
+    plt.savefig(f'results/som_{currentTime}')
 
-    np.save(f'ikt590/reducedDims/som/{currentTime}', som)
+    np.save(f'reducedDims/som/{currentTime}', som)
 
 
 if __name__ == "__main__":
