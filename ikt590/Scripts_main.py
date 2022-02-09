@@ -2,8 +2,8 @@ import logging
 import time
 import os
 
-import data_import
-import data_manipulation
+import DataScripts.data_import as data_import
+import DataScripts.data_manipulation as data_manipulation
 
 
 def main():
@@ -23,12 +23,23 @@ def main():
     # print(idd)
 
     # Create dataset from local data files
-    dmc = data_manipulation.create_dataset()
-    print(dmc)
+    # dmc = data_manipulation.create_dataset()
+    # print(dmc)
 
     # Read dataset from local dataset files
     # dmr = data_manipulation.read_dataset()
     # logging.debug(dmr)
+    # logging.debug(len(dmr))
+    # logging.debug(len(dmr[0]))
+    # logging.debug(len(dmr[0][0]))
+    # logging.debug(len(dmr[0][0][0]))
+    # logging.debug(len(dmr[0][0][0][0]))
+    # logging.debug(len(dmr[0][0][0][1]))
+    # logging.debug(len(dmr[0][0][0][0][0]))
+    # logging.debug(len(dmr[0][0][0][1][0]))
+    # logging.debug(len(dmr[0][0][0][0][0][0]))
+    # logging.debug(len(dmr[0][0][0][0][0][0][0]))
+    # logging.debug(dmr[0][1])
     
     ################ ======== Functions/code goes above here ======== ################
     logging.info('Finished')
