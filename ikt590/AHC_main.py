@@ -1,4 +1,5 @@
 from sklearn.cluster import AgglomerativeClustering
+from scipy.cluster.hierarchy import dendrogram
 import matplotlib.pyplot as plt
 import numpy as np
 import logging
@@ -16,12 +17,13 @@ def main():
     logger = logging.getLogger(__name__)
 
     def AHC(x, n_clusters = 3):
-        ahc = AgglomerativeClustering(n_clusters=n_clusters, compute_full_tree=True)
-        return ahc.fit_predict(x)
+        # ahc = AgglomerativeClustering(n_clusters=n_clusters, compute_full_tree=True)
+        ahc = AgglomerativeClustering(distance_threshold=0, n_clusters=None)
+        return ahc.fit_predict(x), ahc
     
     def cluster(x, reduction, k = 3, figDir='./.figs/'):
         logger.debug(f'Kmeans for {reduction}')
-        dbscan_pred = AHC(x)
+        dbscan_pred, cModel = AHC(x)
 
         # colors = ['r','b','g','y','m','c','k']
         colors = ['lightcoral', 'red', 'darkred', 'chocolate', 'bisque', 'darkorange', 'gold', 'yellow', 'olive', 'darkgreen', 'lime', 'aquamarine', 'teal', 'cyan', 'lightblue', 'steelblue', 'navy', 'blue', 'indigo', 'violet', 'purple', 'crimson', 'pink']
@@ -36,25 +38,51 @@ def main():
         plt.savefig(os.path.join(figDir + "Hierarchical-" + reduction + '-' + currentTime))
         plt.clf()
 
-        return dbscan_pred
+        return dbscan_pred, cModel
 
+    def plot_dendrogram(model, **kwargs):
+        # Create linkage matrix and then plot the dendrogram
+
+        # create the counts of samples under each node
+        counts = np.zeros(model.children_.shape[0])
+        n_samples = len(model.labels_)
+        for i, merge in enumerate(model.children_):
+            current_count = 0
+        for child_idx in merge:
+            if child_idx < n_samples:
+                current_count += 1  # leaf node
+            else:
+                current_count += counts[child_idx - n_samples]
+        counts[i] = current_count
+
+        linkage_matrix = np.column_stack([model.children_, model.distances_, counts]).astype(float)
+
+        # Plot the corresponding dendrogram
+        dendrogram(linkage_matrix, **kwargs)
+        plt.show()
+        plt.clf
+    
+    
     #PCA
     logging.info('Staging PCA')
     xPCA = np.load('reducedDims/pca/1644398105.npy').tolist()
     xPCA = random.sample(xPCA, 10000)
-    PCA_pred = cluster(xPCA, 'pca', k=3)
-    
+    PCA_pred, PCA_model = cluster(xPCA, 'pca', k=3)
+    # plot_dendrogram(PCA_model, truncate_mode='level', p=3)
+
     #Autoencoder
     logging.info('Staging AE')
     xAE = np.load('reducedDims/autoencoder/1644405844.npy').tolist()
     xAE = random.sample(xAE, 10000)
-    AE_pred = cluster(xAE, 'autoencoder', k=3)
+    AE_pred, AE_model = cluster(xAE, 'autoencoder', k=3)
+    # plot_dendrogram(AE_model, truncate_mode='level', p=3)
 
     #SOM
     logging.info('Staging SOM')
     xSOM = np.load('reducedDims/som/1644406419.npy').tolist()
     xSOM = random.sample(xSOM, 10000)
-    SOM_pred  = cluster(xSOM, 'SOM', k=3)
+    SOM_pred, SOM_model  = cluster(xSOM, 'SOM', k=3)
+    # plot_dendrogram(SOM_model, truncate_mode='level', p=3)
 
 
 if __name__ == "__main__":
