@@ -1,5 +1,6 @@
 from keras.models import load_model
 import DataScripts.data_interpolate as interpolate
+import DataScripts.data_manipulation as data_manipulation
 import matplotlib.pyplot as plt
 import tensorflow as tf
 import numpy as np
@@ -16,14 +17,15 @@ def main():
     dataset = []
     sample_size = 40
 
-    for filename in os.listdir('./.localData'):
-        csvData = pandas.read_csv(f"./.localData/{filename}")
-        data = interpolate.interpolation(csvData)
-        for i in range(len(data)-sample_size):
-            dataset.append(data[i:i + sample_size])
+    # for filename in os.listdir('./.localData'):
+    #     csvData = pandas.read_csv(f"./.localData/{filename}")
+    #     data = interpolate.interpolation(csvData)
+    #     for i in range(len(data)-sample_size):
+    #         dataset.append(data[i:i + sample_size])
+    meta, dataset = data_manipulation.read_dataset(datasetFile='./.dataset/dataset-1644397269.json')
 
     x = []
-    dataset = random.sample(dataset, 100)
+    dataset = random.sample(dataset, 10000)
     dataset = np.asarray(dataset)
     for d in dataset:
         minVal = min(d)*0.9
@@ -33,7 +35,8 @@ def main():
 
     x = np.array(x)
 
-    model = load_model(f"{helper_folder}/encoder")
+    # model = load_model(f"{helper_folder}/encoder")
+    model = load_model('autoencoder/encoder')
     model.build()
 
     reduced_dims = model.predict(x)
@@ -42,7 +45,7 @@ def main():
 
     #save
     currentTime = str(int(time.time()))
-    np.save(f'ikt590/reducedDims/autoencoder/{currentTime}', reduced_dims)
+    np.save(f'reducedDims/autoencoder/{currentTime}', reduced_dims)
 
     ax = plt.axes(projection='3d')
     for point in reduced_dims:
