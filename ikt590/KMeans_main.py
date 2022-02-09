@@ -46,25 +46,27 @@ def main():
         plt.savefig(os.path.join(figDir + algorithm + '-' + currentTime))
         plt.clf()
         # plt.show()
+
+        return kmeans_pred
     
 
     #PCA
     logging.info('Staging PCA')
     xPCA = np.load('reducedDims/pca/1644398105.npy').tolist()
     xPCA = random.sample(xPCA, 10000)
-    cluster(xPCA, 'pca', k=3)
+    PCA_pred = cluster(xPCA, 'pca', k=3)
     
     #Autoencoder
     logging.info('Staging AE')
     xAE = np.load('reducedDims/autoencoder/1644405844.npy').tolist()
     xAE = random.sample(xAE, 10000)
-    cluster(xAE, 'autoencoder', k=3)
+    AE_pred = cluster(xAE, 'autoencoder', k=3)
 
     #SOM
     logging.info('Staging SOM')
     xSOM = np.load('reducedDims/som/1644406419.npy').tolist()
     xSOM = random.sample(xSOM, 10000)
-    cluster(xSOM, 'SOM', k=3)
+    SOM_pred  = cluster(xSOM, 'SOM', k=3)
 
 
 if __name__ == "__main__":
