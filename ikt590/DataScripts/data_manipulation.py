@@ -4,7 +4,9 @@ import time
 import json
 import os
 
-import data_interpolate
+# import data_interpolate
+# import data_interpolate
+import DataScripts.data_interpolate as data_interpolate
 
 # TODO:
 # Optimization: Use Numpy arrays instead of Python lists
@@ -40,16 +42,19 @@ def create_dataset(inputDirectory='./.localData/', outputDirectory='./.dataset/'
             metadata.append([file.split('.csv')[0], csvData['timestamp'][set], data[set]])
 
         # Create list of datasets
-        datasetList.append([metadata, samples])
-        
-        # Create ouput directory and write dataset to JSON file in said directory
-        if not os.path.exists(outputDirectory):
-            os.makedirs(outputDirectory)
-        with open(os.path.join(outputDirectory+'dataset-'+currentTime+'.json'), 'w') as filehandle:
-            filehandle.write(json.dumps(datasetList))
+        # datasetList.append([metadata, samples])
+    
+    # Create list of metadata and samples
+    datasetList = [metadata, samples]
+
+    # Create ouput directory and write dataset to JSON file in said directory
+    if not os.path.exists(outputDirectory):
+        os.makedirs(outputDirectory)
+    with open(os.path.join(outputDirectory+'dataset-'+currentTime+'.json'), 'w') as filehandle:
+        filehandle.write(json.dumps(datasetList))
 
 
-def read_dataset(datasetFile='./.dataset/datasetV1.0.json', returnType='list'):
+def read_dataset(datasetFile='./.dataset/dataset-1644394453.json', returnType='list'):
     """Reads data from file and returns it"""
 
     # Variables
@@ -61,7 +66,9 @@ def read_dataset(datasetFile='./.dataset/datasetV1.0.json', returnType='list'):
 
     # Return dataset in preferred format
     if returnType=='list':
-        return datasetList
+        metadata = datasetList[0]
+        x = datasetList[1]
+        return metadata, x
     else:
         print(f"Invalid \"returnType\": {returnType}")
         return

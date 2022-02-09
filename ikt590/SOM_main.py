@@ -55,7 +55,7 @@ def main():
 
     if not os.path.exists('results'):
         os.makedirs('results')
-    plt.savefig(f'results/somResults/som{currentTime}')
+    plt.savefig(f'results/somResults/som_{currentTime}')
 
     np.save(f'ikt590/reducedDims/som/{currentTime}', som)
 
