@@ -22,7 +22,7 @@ def main():
     #     data = interpolate.interpolation(csvData)
     #     for i in range(len(data)-sample_size):
     #         dataset.append(data[i:i + sample_size])
-    meta, dataset = data_manipulation.read_dataset(datasetFile='./.dataset/dataset-1644397269.json')
+    meta, dataset = data_manipulation.read_dataset(datasetFile='./.dataset/dataset-1644414750.json')
 
     x = []
     dataset = random.sample(dataset, 10000)
