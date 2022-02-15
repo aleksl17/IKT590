@@ -1,4 +1,5 @@
 from sklearn.cluster import AgglomerativeClustering
+from performance import performance_for_algorithm
 from scipy.cluster.hierarchy import dendrogram
 import matplotlib.pyplot as plt
 import numpy as np
@@ -84,6 +85,7 @@ def main():
     SOM_pred, SOM_model  = cluster(xSOM, 'SOM', k=3)
     # plot_dendrogram(SOM_model, truncate_mode='level', p=3)
 
+    performance = performance_for_algorithm('AHC', xPCA, PCA_pred, xAE, AE_pred, xSOM, SOM_pred)
 
 if __name__ == "__main__":
     main()
