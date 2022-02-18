@@ -1,3 +1,4 @@
+from performance import performance_for_algorithm
 from sklearn.cluster import DBSCAN
 import matplotlib.pyplot as plt
 import numpy as np
@@ -45,6 +46,7 @@ def main():
         return dbscan_pred
 
     #PCA
+    print("here")
     logging.info('Staging PCA')
     xPCA = np.load('reducedDims/pca/1644398105.npy').tolist()
     xPCA = random.sample(xPCA, 10000)
@@ -52,7 +54,7 @@ def main():
     
     #Autoencoder
     logging.info('Staging AE')
-    xAE = np.load('reducedDims/autoencoder/1644405844.npy').tolist()
+    xAE = np.load('reducedDims/autoencoder/1644507397.npy').tolist()
     xAE = random.sample(xAE, 10000)
     AE_pred = cluster(xAE, 'autoencoder', k=3)
 
@@ -61,6 +63,8 @@ def main():
     xSOM = np.load('reducedDims/som/1644406419.npy').tolist()
     xSOM = random.sample(xSOM, 10000)
     SOM_pred  = cluster(xSOM, 'SOM', k=3)
+
+    performance = performance_for_algorithm('DBSCAN', xPCA, PCA_pred, xAE, AE_pred, xSOM, SOM_pred)
 
 
 if __name__ == "__main__":
