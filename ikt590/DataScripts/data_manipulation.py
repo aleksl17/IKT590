@@ -7,6 +7,7 @@ import os
 # import data_interpolate
 # import data_interpolate
 import DataScripts.data_interpolate as data_interpolate
+import DataScripts.data_normalize as data_normalize
 
 # TODO:
 # Optimization: Use Numpy arrays instead of Python lists
@@ -26,16 +27,16 @@ def create_dataset(inputDirectory='./.localData/', outputDirectory='./.dataset/'
 
     # Creates list of DataFrames from data from CSV files input directory
     for file in os.listdir(inputDirectory):
-        # Read files and interpolate
+        # Read files
         csvData = pandas.read_csv(os.path.join(inputDirectory, file))
-        data = data_interpolate.interpolation(csvData)
-        data = data.tolist()
 
-        logger.debug(type(data))
-        # logger.debug(data)
-        logger.debug(len(data))
-        # logger.debug(numpy.shape(data))
+        # Interpolate data and convert to python list
+        intData = data_interpolate.interpolation(csvData)
+        intData = intData.tolist()
         
+        # Normalize data
+        data = data_normalize.normalize(intData)
+
         # Split data into samples with overlap and create respective metadata tabel
         for set in range(len(data)-sample_size):
             samples.append(data[set:set+sample_size])
