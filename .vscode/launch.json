@@ -16,7 +16,7 @@
             "name": "Python: Scripts main",
             "type": "python",
             "request": "launch",
-            "program": "./ikt590/DataScripts/Scripts_main.py",
+            "program": "./ikt590/Scripts_main.py",
             "console": "integratedTerminal",
             "python.defaultInterpreterPath": "%USERPROFILE%/IKT590/.ikt590_virtualenv/Scripts/python.exe"
         },
