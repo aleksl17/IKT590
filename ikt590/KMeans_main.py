@@ -1,3 +1,4 @@
+from performance import performance_for_algorithm
 from sklearn.cluster import KMeans
 import matplotlib.pyplot as plt
 import numpy as np
@@ -67,6 +68,7 @@ def main():
     xSOM = random.sample(xSOM, 10000)
     SOM_pred  = cluster(xSOM, 'SOM', k=3)
     
+    performance = performance_for_algorithm('KMeans', xPCA, PCA_pred, xAE, AE_pred, xSOM, SOM_pred)
 
 if __name__ == "__main__":
     main()
