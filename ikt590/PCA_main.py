@@ -10,7 +10,7 @@ import pandas
 import time
 import os
 
-import DataScripts.data_manipulation as data_manipulation
+import scripts.data_manipulation as data_manipulation
 
 
 def main():

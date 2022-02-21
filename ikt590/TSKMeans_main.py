@@ -11,7 +11,7 @@ from tslearn.preprocessing import TimeSeriesScalerMeanVariance, TimeSeriesResamp
 import numpy as np
 import sys
 
-import DataScripts.data_interpolate as interpolate
+import scripts.data_interpolate as interpolate
 
 # TODO:
 # Remove unused imports
