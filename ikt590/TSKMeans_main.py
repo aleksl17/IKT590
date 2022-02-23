@@ -68,8 +68,8 @@ def main():
         return silhouette_score(data, y_pred, metric=metric), model.cluster_centers_
 
 
-    for filename in os.listdir('./.localData'):
-        csvData = pandas.read_csv(f"./.localData/{filename}")
+    for filename in os.listdir('./.tmpData'):
+        csvData = pandas.read_csv(f"./.tmpData/{filename}")
         # print(csvData)
         data = interpolate.interpolation(csvData)
         # for i in range(math.floor(len(data)/sample_size)):
