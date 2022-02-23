@@ -24,7 +24,7 @@ def main():
     
     dims = 3
 
-    meta, dataset = data_manipulation.read_dataset(datasetFile='./.dataset/dataset-1644397269.json')
+    meta, dataset = data_manipulation.read_dataset(datasetFile='./dataset/dataset.json')
     dataset = random.sample(dataset, 10000)
     x = np.asarray(dataset)
 

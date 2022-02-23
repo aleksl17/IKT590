@@ -10,7 +10,7 @@ import time
 import sys
 import os
 
-helper_folder = "ikt590/autoencoder"
+# helper_folder = "ikt590/autoencoder"
 
 def main():
     #get data
@@ -36,7 +36,7 @@ def main():
     x = np.array(x)
 
     # model = load_model(f"{helper_folder}/encoder")
-    model = load_model('autoencoder/encoder')
+    model = load_model('models/encoder')
     model.build()
 
     reduced_dims = model.predict(x)

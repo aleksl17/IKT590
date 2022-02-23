@@ -26,12 +26,15 @@ def main():
         logger.debug(f'Kmeans for {reduction}')
         dbscan_pred, cModel = AHC(x)
 
-        # colors = ['r','b','g','y','m','c','k']
-        colors = ['lightcoral', 'red', 'darkred', 'chocolate', 'bisque', 'darkorange', 'gold', 'yellow', 'olive', 'darkgreen', 'lime', 'aquamarine', 'teal', 'cyan', 'lightblue', 'steelblue', 'navy', 'blue', 'indigo', 'violet', 'purple', 'crimson', 'pink']
-        random.shuffle(colors)
-
+        # Color palette made with: https://mokole.com/palette.html
+        # Settings: 16, 5%, 90%, 15000. Result: Percieved distance of 50.84, 46233 loops
+        colors = ['darkslategray','maroon2', 'darkgreen', 'darkkhaki', 'darkblue', 'red', 'darkturquoise', 'orange', 'yellow', 'lime', 'mediumspringgreen', 'blue', 'thistle', 'fuchsia', 'dodgerblue', 'deeppink']
+        
         ax = plt.axes(projection='3d')
         for point, c in zip(x, dbscan_pred):
+            if c > len(colors):
+                logger.warning("Max colors reached! Consider adding more colors.")
+                c = len(colors)-1
             ax.scatter3D(point[0], point[1], point[2], c=colors[c])
         
         logger.debug("Loading Figure")
