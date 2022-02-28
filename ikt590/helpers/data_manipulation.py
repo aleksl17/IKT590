@@ -18,6 +18,12 @@ def create_dataset(inputDirectory='./.tmpData/', outputDirectory='./.tmpData/', 
     
     # Initalize logger
     logger = logging.getLogger(__name__)
+
+    # Initialize directories
+    if not os.path.exists(inputDirectory):
+        os.makedirs(inputDirectory)
+    if not os.path.exists(outputDirectory):
+        os.makedirs(outputDirectory)
     
     # Variables
     currentTime = str(int(time.time()))
