@@ -6,8 +6,8 @@ import os
 
 # import data_interpolate
 # import data_interpolate
-import scripts.data_interpolate as data_interpolate
-import scripts.data_normalize as data_normalize
+import helpers.data_interpolate as data_interpolate
+import helpers.data_normalize as data_normalize
 
 # TODO:
 # Optimization: Use Numpy arrays instead of Python lists
