@@ -10,7 +10,7 @@ import pandas
 import time
 import os
 
-import DataScripts.data_manipulation as data_manipulation
+import scripts.data_manipulation as data_manipulation
 
 
 def main():
@@ -34,7 +34,7 @@ def main():
     dims = 3
 
     currentTime = str(int(time.time()))
-    meta, x = data_manipulation.read_dataset(datasetFile='./.dataset/dataset-1644397269.json')
+    meta, x = data_manipulation.read_dataset(datasetFile='./dataset/dataset.json')
     x = random.sample(x, 10000)
     logger.debug(x)
     x = StandardScaler().fit_transform(x)
