@@ -5,8 +5,8 @@ from sklearn_som.som import SOM
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
-import DataScripts.data_interpolate as interpolate
-import DataScripts.data_manipulation as data_manipulation
+import scripts.data_interpolate as interpolate
+import scripts.data_manipulation as data_manipulation
 import random
 import pandas
 import time
@@ -24,7 +24,7 @@ def main():
     
     dims = 3
 
-    meta, dataset = data_manipulation.read_dataset(datasetFile='./.dataset/dataset-1644397269.json')
+    meta, dataset = data_manipulation.read_dataset(datasetFile='./dataset/dataset.json')
     dataset = random.sample(dataset, 10000)
     x = np.asarray(dataset)
 
