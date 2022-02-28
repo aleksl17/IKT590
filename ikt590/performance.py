@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import time
 
 # NOTE
-# Kan denne flyttes til "Scripts" folderen?
+# Kan denne flyttes til "helpers" folderen?
 
 def get_all_performance_for_method(x, labels):
     sil = silhouette_score(x, labels)
