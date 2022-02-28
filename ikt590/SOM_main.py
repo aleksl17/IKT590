@@ -5,8 +5,8 @@ from sklearn_som.som import SOM
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
-import scripts.data_interpolate as interpolate
-import scripts.data_manipulation as data_manipulation
+import helpers.data_interpolate as interpolate
+import helpers.data_manipulation as data_manipulation
 import random
 import pandas
 import time
