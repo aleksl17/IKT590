@@ -2,8 +2,8 @@ import logging
 import time
 import os
 
-import scripts.data_import as data_import
-import scripts.data_manipulation as data_manipulation
+import helpers.data_import as data_import
+import helpers.data_manipulation as data_manipulation
 
 
 def main():
