@@ -53,8 +53,8 @@ for d in dataset:
 
 # x = np.array(x)
 if load_old_models:
-    encoder = load_model('autoencoder/encoder')
-    decoder = load_model('autoencoder/decoder')
+    encoder = load_model('models/encoder')
+    decoder = load_model('models/decoder')
 
 else:    
     #define models
@@ -85,8 +85,8 @@ for i in range(batches):
 
     print(f'Saving models for batch: {i}')
     # model.save('autoencoder/model')
-    encoder.save('autoencoder/encoder')
-    decoder.save('autoencoder/decoder')
+    encoder.save('models/encoder')
+    decoder.save('models/decoder')
 
 
 plt.plot(loss_list)
