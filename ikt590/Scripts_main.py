@@ -19,11 +19,11 @@ def main():
     
     # Download data via API if .localData folder is empty
     #import_data.import_data(signalFrom="2021-01-01T01:00:00.000Z", signalTo="2022-01-01T01:00:00.000Z")
-    # idd = data_import.import_data()
-    # print(idd)
+    idd = data_import.import_data()
+    print(idd)
 
     # Create dataset from local data files
-    dmc = data_manipulation.create_dataset()
+    # dmc = data_manipulation.create_dataset()
     # print(dmc)
 
     # Read dataset from local dataset files
