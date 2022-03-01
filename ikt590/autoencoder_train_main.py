@@ -3,24 +3,25 @@ from operator import mod
 from turtle import color
 from tensorflow.keras.models import Sequential, load_model
 import matplotlib.pyplot as plt
-from models import getModels
 import numpy as np
 import random
 import pandas
 import sys
 import os
 
+import helpers.autoencoder_models as autoencoder_models
+
 # Disables GPU
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 # sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-import data_interpolate
-import data_manipulation
+import helpers.data_interpolate as data_interpolate
+import helpers.data_manipulation as data_manipulation
 
 batches = 10
-batch_size = 1000
+batch_size = 10000
 batch_epoch = 1000
-load_old_models = True
+load_old_models = False
 
 
 def train_batch(x, model, epochs):
@@ -37,7 +38,7 @@ sample_size = 40
 #     for i in range(len(data)-sample_size):
 #         dataset.append(data[i:i + sample_size])
 
-meta, dataset = data_manipulation.read_dataset(datasetFile='./dataset/dataset.json')
+meta, dataset = data_manipulation.read_dataset(datasetFile='datasets/dataset.json')
 
 dataset = random.sample(dataset, 10000)
 dataset = np.asarray(dataset)
@@ -58,7 +59,7 @@ if load_old_models:
 
 else:    
     #define models
-    encoder, decoder = getModels(sample_size, 3)
+    encoder, decoder = autoencoder_models.getModels(sample_size, 3)
     encoder._name = "encoder"
     decoder._name = "decoder"
 
