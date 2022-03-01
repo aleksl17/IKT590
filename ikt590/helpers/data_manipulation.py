@@ -6,8 +6,8 @@ import os
 
 # import data_interpolate
 # import data_interpolate
-import scripts.data_interpolate as data_interpolate
-import scripts.data_normalize as data_normalize
+import helpers.data_interpolate as data_interpolate
+import helpers.data_normalize as data_normalize
 
 # TODO:
 # Optimization: Use Numpy arrays instead of Python lists
@@ -18,6 +18,12 @@ def create_dataset(inputDirectory='./.tmpData/', outputDirectory='./.tmpData/', 
     
     # Initalize logger
     logger = logging.getLogger(__name__)
+
+    # Initialize directories
+    if not os.path.exists(inputDirectory):
+        os.makedirs(inputDirectory)
+    if not os.path.exists(outputDirectory):
+        os.makedirs(outputDirectory)
     
     # Variables
     currentTime = str(int(time.time()))
@@ -55,7 +61,7 @@ def create_dataset(inputDirectory='./.tmpData/', outputDirectory='./.tmpData/', 
         filehandle.write(json.dumps(datasetList))
 
 
-def read_dataset(datasetFile='./.dataset/dataset-1644394453.json', returnType='list'):
+def read_dataset(datasetFile='datasets/dataset.json', returnType='list'):
     """Reads data from file and returns it"""
 
     # Variables
