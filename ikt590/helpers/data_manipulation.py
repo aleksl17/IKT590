@@ -4,13 +4,13 @@ import time
 import json
 import os
 
-# import data_interpolate
-# import data_interpolate
 import helpers.data_interpolate as data_interpolate
 import helpers.data_normalize as data_normalize
 
 # TODO:
 # Optimization: Use Numpy arrays instead of Python lists
+# NOTE
+# Reference and dataset might not align due to time-shift from interpolation.-
 
 
 def create_dataset(inputDirectory='./.tmpData/', outputDirectory='./.tmpData/', sample_size=40):
@@ -28,53 +28,71 @@ def create_dataset(inputDirectory='./.tmpData/', outputDirectory='./.tmpData/', 
     # Variables
     currentTime = str(int(time.time()))
     datasetList = []
-    metadata = []
+    datasetMetadata = []
     samples = []
+    reference = []
+    referenceMetadata = []
 
     # Creates list of DataFrames from data from CSV files input directory
     for file in os.listdir(inputDirectory):
-        # Read files
-        csvData = pandas.read_csv(os.path.join(inputDirectory, file))
+        if file.endswith('.csv'):
+            # Read files
+            csvData = pandas.read_csv(os.path.join(inputDirectory, file))
+            valueData = csvData['value'].tolist()
 
-        # Interpolate data and convert to python list
-        intData = data_interpolate.interpolation(csvData)
-        intData = intData.tolist()
-        
-        # Normalize data
-        data = data_normalize.normalize(intData)
+            # Create reference "samples"
+            for i in range(len(valueData)-sample_size):
+                reference.append(valueData[i:i+sample_size])
+                referenceMetadata.append([file.split('.csv')[0], csvData['timestamp'][i], valueData[i]])
 
-        # Split data into samples with overlap and create respective metadata tabel
-        for set in range(len(data)-sample_size):
-            samples.append(data[set:set+sample_size])
-            metadata.append([file.split('.csv')[0], csvData['timestamp'][set], data[set]])
+            # Interpolate data and convert to python list
+            intData = data_interpolate.interpolation(csvData)
+            intData = intData.tolist()
+            
+            # Normalize data
+            normData = data_normalize.normalize(intData)
 
-        # Create list of datasets
-        # datasetList.append([metadata, samples])
+            # Split data into samples with overlap and create respective metadata tabel
+            for set in range(len(normData)-sample_size):
+                samples.append(normData[set:set+sample_size])
+                datasetMetadata.append([file.split('.csv')[0], csvData['timestamp'][set], normData[set]])
+
+            # Create list of datasets
+            # datasetList.append([metadata, samples])
     
-    # Create list of metadata and samples
-    datasetList = [metadata, samples]
+    # Create list of dataset metadata and samples
+    datasetList = [datasetMetadata, samples]
+    # Create list of reference metadata and data
+    referenceList = [referenceMetadata, reference]
 
-    # Create ouput directory and write dataset to JSON file in said directory
+    # logger.debug(f"datasetList first:\n{datasetList[:1]}")
+    # logger.debug(f"referenceList first:\n{referenceList[:1]}")
+
+    # Create ouput directory
     if not os.path.exists(outputDirectory):
         os.makedirs(outputDirectory)
+    # Write dataset
     with open(os.path.join(outputDirectory+'dataset-'+currentTime+'.json'), 'w') as filehandle:
         filehandle.write(json.dumps(datasetList))
+    # Write reference
+    with open(os.path.join(outputDirectory+'reference-'+currentTime+'.json'), 'w') as filehandle:
+        filehandle.write(json.dumps(referenceList))
 
 
 def read_dataset(datasetFile='datasets/dataset.json', returnType='list'):
     """Reads data from file and returns it"""
 
     # Variables
-    datasetList = []
+    list = []
 
-    # Opens dataset file and reads content to a python list
+    # Opens data file and reads content to a python list
     with open(datasetFile, 'r') as filehandle:
-        datasetList = json.loads(filehandle.read())
+        list = json.loads(filehandle.read())
 
-    # Return dataset in preferred format
+    # Return data in preferred format
     if returnType=='list':
-        metadata = datasetList[0]
-        x = datasetList[1]
+        metadata = list[0]
+        x = list[1]
         return metadata, x
     else:
         print(f"Invalid \"returnType\": {returnType}")
