@@ -3,23 +3,25 @@ from operator import mod
 from turtle import color
 from tensorflow.keras.models import Sequential, load_model
 import matplotlib.pyplot as plt
-from models import getModels
 import numpy as np
 import random
 import pandas
 import sys
 import os
+
+import helpers.autoencoder_models as autoencoder_models
+
 # Disables GPU
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-import DataScripts.data_interpolate as data_interpolate
-import DataScripts.data_manipulation as data_manipulation
+# sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+import helpers.data_interpolate as data_interpolate
+import helpers.data_manipulation as data_manipulation
 
 batches = 10
-batch_size = 1000
+batch_size = 10000
 batch_epoch = 1000
-load_old_models = True
+load_old_models = False
 
 
 def train_batch(x, model, epochs):
@@ -36,7 +38,7 @@ sample_size = 40
 #     for i in range(len(data)-sample_size):
 #         dataset.append(data[i:i + sample_size])
 
-meta, dataset = data_manipulation.read_dataset(datasetFile='./.dataset/dataset-1644414750.json')
+meta, dataset = data_manipulation.read_dataset(datasetFile='datasets/dataset.json')
 
 dataset = random.sample(dataset, 10000)
 dataset = np.asarray(dataset)
@@ -52,12 +54,12 @@ for d in dataset:
 
 # x = np.array(x)
 if load_old_models:
-    encoder = load_model('autoencoder/encoder')
-    decoder = load_model('autoencoder/decoder')
+    encoder = load_model('models/encoder')
+    decoder = load_model('models/decoder')
 
 else:    
     #define models
-    encoder, decoder = getModels(sample_size, 3)
+    encoder, decoder = autoencoder_models.getModels(sample_size, 3)
     encoder._name = "encoder"
     decoder._name = "decoder"
 
@@ -84,8 +86,8 @@ for i in range(batches):
 
     print(f'Saving models for batch: {i}')
     # model.save('autoencoder/model')
-    encoder.save('autoencoder/encoder')
-    decoder.save('autoencoder/decoder')
+    encoder.save('models/encoder')
+    decoder.save('models/decoder')
 
 
 plt.plot(loss_list)

@@ -7,7 +7,7 @@ import os
 import io
 
 
-def import_data(signalFrom="", signalTo="", signalsFile='./testsignals.json', saveDirectory="./.localData", saveLocal=True, override=False):
+def import_data(signalFrom="", signalTo="", signalsFile='./testsignals.json', saveDirectory="./.tmpData", saveLocal=True, override=True):
     """Fetches data via API and saves locally or returns list of strings"""
     
     # Initalize logger
@@ -15,12 +15,8 @@ def import_data(signalFrom="", signalTo="", signalsFile='./testsignals.json', sa
     
     if saveLocal:
         # Create appropriate directories
-        try:
-            os.listdir(saveDirectory)
-        except FileNotFoundError:
-            logger.info(f"Directory not found: \"{saveDirectory}\"")
+        if not os.path.exists(saveDirectory):
             os.makedirs(saveDirectory)
-            logger.info(f"Directory created: \"{saveDirectory}\"")
         # Override
         if override:
             for file in os.listdir(saveDirectory):

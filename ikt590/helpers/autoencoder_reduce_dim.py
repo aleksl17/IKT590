@@ -12,9 +12,9 @@ import os
 
 # from ..DataScripts import data_manipulation
 
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+# sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 # import DataScripts
-import DataScripts.data_manipulation as data_manipulation
+import data_manipulation
 
 
 # sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))

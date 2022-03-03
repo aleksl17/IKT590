@@ -1,8 +1,8 @@
+import matplotlib.pyplot as plt
 from scipy import interpolate
+from datetime import datetime
 import logging
 import math
-from datetime import datetime
-import matplotlib.pyplot as plt
 
 
 def interpolation(data, sample_length = 15*60):

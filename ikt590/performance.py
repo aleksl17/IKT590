@@ -2,6 +2,9 @@ from sklearn.metrics import silhouette_score, davies_bouldin_score, calinski_har
 import matplotlib.pyplot as plt
 import time
 
+# NOTE
+# Kan denne flyttes til "helpers" folderen?
+
 def get_all_performance_for_method(x, labels):
     sil = silhouette_score(x, labels)
     dbs = davies_bouldin_score(x, labels)
