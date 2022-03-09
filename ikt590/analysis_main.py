@@ -85,8 +85,15 @@ def main():
             totalOutliers += outliersNum
 
     # Total metadata
-    totalTimeGapsMean = tmpX/tmpY
+    # totalTimeGapsMean = tmpX/tmpY
+    totalTimeGapsMean = numpy.mean(timeGapsList)
     logging.info(f"Total Time Gap Mean: {totalTimeGapsMean}")
+    totalTimeGapsMedian = numpy.median(timeGapsList)
+    logging.info(f"Total Time Gap Median: {totalTimeGapsMedian}")
+    totalValueMean = numpy.mean(valueDataList)
+    logging.info(f"Total Value Mean: {totalValueMean}")
+    totalValueMedian = numpy.median(valueDataList)
+    logging.info(f"Total Value Median: {totalValueMedian}")
     logging.info(f"Total Rows: {totalRows}")
     logging.info(f"Total Outliers: {totalOutliers}")
     outlierPercentage = (totalOutliers/totalRows)*100
