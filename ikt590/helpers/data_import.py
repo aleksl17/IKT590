@@ -7,7 +7,7 @@ import os
 import io
 
 
-def import_data(signalFrom="", signalTo="", signalsFile='./testsignals.json', saveDirectory="./.tmpData", saveLocal=True, override=True):
+def import_data(signalFrom="", signalTo="", signalsFile='./signals.json', saveDirectory="./.tmpData", saveLocal=True, override=True):
     """Fetches data via API and saves locally or returns list of strings"""
     
     # Initalize logger

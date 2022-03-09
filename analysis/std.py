@@ -6,7 +6,7 @@ import pandas
 import os
 # import ikt590.DataScripts.data_manipulation as data_manipulation
 
-inputDirectory='./.localData/'
+inputDirectory='./.tmpData/'
 
 x = []
 
@@ -45,11 +45,11 @@ print("Too high:")
 print(len(outliers)/len(x))
 
 #distribution
-dist = np.zeros(50)
-y = np.asarray(range(50))/2
+# dist = np.zeros(50)
+# y = np.asarray(range(50))/2
 
-for x1 in x:
-    dist[round(x1*2)] = dist[round(x1*2)] + 1
+# for x1 in x:
+#     dist[round(x1*2)] = dist[round(x1*2)] + 1
 
 
 
