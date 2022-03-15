@@ -4,6 +4,7 @@
 *.jpeg filter=lfs diff=lfs merge=lfs -text
 *.pb filter=lfs diff=lfs merge=lfs -text
 *.index filter=lfs diff=lfs merge=lfs -text
+signals/** filter=lfs diff=lfs merge=lfs -text
 datasets/** filter=lfs diff=lfs merge=lfs -text
 reducedDims/** filter=lfs diff=lfs merge=lfs -text
 models/** filter=lfs diff=lfs merge=lfs -text
