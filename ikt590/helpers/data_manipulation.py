@@ -1,10 +1,11 @@
-from datetime import datetime, timedelta
 import logging
 import pandas
 import numpy
 import time
 import json
 import os
+
+from datetime import datetime, timedelta
 
 import helpers.data_interpolate as data_interpolate
 import helpers.data_normalize as data_normalize
@@ -29,17 +30,11 @@ def create_dataset(inputDirectory='./.tmpData/', outputDirectory='./.tmpData/', 
     currentTime = str(int(time.time()))
     datasetList = []
     samplesMetadata = []
-    samples = []
-    references = []
     referencesMetadata = []
-    # purgeIndexList = []
-    perFileSampleLengthList = []
-    referencesMaxList = []
     postProcSamplesMetadata = []
     postProcSamples = []
     postProcReferencesMetadata = []
     postProcReferences = []
-    invalidSamplecounter = 0
 
     # Creates list of DataFrames from data from CSV files input directory
     for file in os.listdir(inputDirectory):
@@ -60,15 +55,12 @@ def create_dataset(inputDirectory='./.tmpData/', outputDirectory='./.tmpData/', 
                 refTime = refTime + timedelta(minutes=15)
             refMax = numpy.mean(referenceList)*outlierMulti
             for i, reference in enumerate(referenceList):
-                refMean = numpy.mean(reference)
-                if refMean < refMax:
+                refMin = min(reference)
+                if refMin < refMax:
                     tmpReferenceList.append(reference)
                     tmpReferenceMetadataList.append(referencesMetadata[i])
             postProcReferencesMetadata.extend(tmpReferenceMetadataList)
             postProcReferences.extend(tmpReferenceList)
-            # references.extend(referenceList)
-            # referencesMaxList.append(outlierMulti*numpy.median(referenceList))
-            # print(referencesMaxList)
             
             # Interpolate data and convert to python list
             intData = data_interpolate.interpolation(csvData)
@@ -86,149 +78,42 @@ def create_dataset(inputDirectory='./.tmpData/', outputDirectory='./.tmpData/', 
                 samplesMetadata.append([file.split('.csv')[0], csvData['timestamp'][set], normData[set]])
             samMax = numpy.mean(sampleList)*outlierMulti
             for i, sample in enumerate(sampleList):
-                samMean = numpy.mean(sample)
-                if samMean < samMax:
+                samMin = min(sample)
+                if samMin < samMax:
                     tmpSampleList.append(sample)
                     tmpSampleMetadataList.append(samplesMetadata[i])
-                else:
-                    invalidSamplecounter += 1
             postProcSamplesMetadata.extend(tmpSampleMetadataList)
             postProcSamples.extend(tmpSampleList)
 
-                    
-            # perFileSampleLengthList.append(len(sampleList))
-            # print(perFileSampleLengthList)
-    
-    # logger.debug(f"references: {references[0]}")
-    # logger.debug(f"samples: {samples[0]}")
+    # logger.debug(f"referencesMaxList: {referencesMaxList}")
+    # logger.debug(f"perFileSampleLengthList: {perFileSampleLengthList}")
+    # logger.debug(f"referencesMetadata length: {len(referencesMetadata)}")
+    # logger.debug(f"references length: {len(references)}")
+    # logger.debug(f"samplesMetadata length: {len(samplesMetadata)}")
+    # logger.debug(f"samples length: {len(samples)}")
 
-    logger.info(f"Invalid Samples removed: {invalidSamplecounter}")
-
-    logger.debug(f"referencesMaxList: {referencesMaxList}")
-    logger.debug(f"perFileSampleLengthList: {perFileSampleLengthList}")
-    logger.debug(f"referencesMetadata length: {len(referencesMetadata)}")
-    logger.debug(f"references length: {len(references)}")
-    # logger.debug(f"references range length: {range(len(references))}")
-    # logger.debug(f"references shape: {numpy.array(references, dtype=object).shape}")
-    # logger.debug(f"references shape: {len(references[0])}")
-    # logger.debug(f"references shape: {len(references[0][0])}")
-    # logger.debug(f"references shape: {len(references[0][0][0])}")
-    # logger.debug(f"references shape: {len(references[0][0][0][0])}")
-    # logger.debug(f"references shape: {len(references[0][0][0][0][0])}")
-    logger.debug(f"samplesMetadata length: {len(samplesMetadata)}")
-    logger.debug(f"samples length: {len(samples)}")
-    
-    # Only appends wanted samples to dataset
-    # for rdx in range(len(referencesMetadata)):
-    #     if rdx % 1000 == 0:
-    #         print(rdx)
-    #     refMean = numpy.mean(references[rdx])
-    #     if rdx < perFileSampleLengthList[0]:
-    #         refMax = referencesMaxList[0]
-    #     elif rdx < perFileSampleLengthList[1]:
-    #         refMax = referencesMaxList[1]
-    #     elif rdx < perFileSampleLengthList[2]:
-    #         refMax = referencesMaxList[2]
-    #     elif rdx < perFileSampleLengthList[3]:
-    #         refMax = referencesMaxList[3]
-    #     # print(refMean)
-    #     # print(refMax)
-    #     if refMean < refMax:
-    #         PostProcSamplesMetadata.append(samplesMetadata[rdx])
-    #         PostProcSamples.append(samples[rdx])
-    #         PostProcReferencesMetadata.append(referencesMetadata[rdx])
-    #         PostProcReferences.append(references[rdx])
-
-    # for idx, rf in enumerate(referencesMaxList):
-    #     print(f"idx: {idx}")
-    #     refMax = referencesMaxList[idx]
-    #     prevLen = 0
-    #     for smpl in range(perFileSampleLengthList[idx]+prevLen):
-    #         refMean = numpy.mean(samples[crrntSmpl])
-    #         if refMean < refMax:
-    #             PostProcSamplesMetadata.append(samplesMetadata[crrntSmpl])
-    #             PostProcSamples.append(samples[crrntSmpl])
-    #             PostProcReferencesMetadata.append(referencesMetadata[crrntSmpl])
-    #             PostProcReferences.append(references[crrntSmpl])
-    #         prevLen = perFileSampleLengthList[idx]
-    #     crrntSmpl = smpl+prevLen
-    #     print(f"smpl: {crrntSmpl}")
-
-
-    logger.debug(f"PostProcSamplesMetadata first 5:\n{postProcSamplesMetadata[:5]}")
-    logger.debug(f"PostProcSamplesMetadata last 5:\n{postProcSamplesMetadata[-5:]}")
-    logger.debug(f"PostProcSamplesMetadata length: {len(postProcSamplesMetadata)}")
-    logger.debug(f"PostProcSamplesMetadata type: {type(postProcSamplesMetadata)}")
-    logger.debug(f"PostProcSamples first 5:\n{postProcSamples[:5]}")
-    logger.debug(f"PostProcSamples last 5:\n{postProcSamples[-5:]}")
-    logger.debug(f"PostProcSamples length: {len(postProcSamples)}")
-    logger.debug(f"PostProcSamples type: {type(postProcSamples)}")
-    logger.debug(f"PostProcReferencesMetadata first 5:\n{postProcReferencesMetadata[:5]}")
-    logger.debug(f"PostProcReferencesMetadata last 5:\n{postProcReferencesMetadata[-5:]}")
-    logger.debug(f"PostProcReferencesMetadata length: {len(postProcReferencesMetadata)}")
-    logger.debug(f"PostProcReferencesMetadata type: {type(postProcReferencesMetadata)}")
-    logger.debug(f"PostProcReferences first 5:\n{postProcReferences[:5]}")
-    logger.debug(f"PostProcReferences last 5:\n{postProcReferences[-5:]}")
-    logger.debug(f"PostProcReferences length: {len(postProcReferences)}")
-    logger.debug(f"PostProcReferences type: {type(postProcReferences)}")
-
-
-
-
-
-
-
-
-
-
-
-
-    # # Find indexes of "samples" to be removed from reference and dataset
-    # referenceMax = outlierMulti*numpy.median(reference)
-    # logger.info(f"Outliers max value: {referenceMax}")
-    # for idx, ref in enumerate(reference):
-    #     refMean = numpy.mean(ref)
-    #     # print(f"ref: {ref}")
-    #     # print(f"refMean: {refMean}")
-    #     if refMean > referenceMax:
-    #         print(f"idx: {idx}")
-    #         print(f"refMean: {refMean}")
-    #         print(f"Substring to be purged: {reference[idx]}")
-    #         purgeIndexList.append(idx)
-
-    # # Purge unwanted outliers
-    # logger.debug(f"Purge Indexes: {purgeIndexList}")
-    # logger.debug(f"Indexes to be purged: {len(purgeIndexList)}")
-    # logger.debug(f"Lengths before purge: {len(reference), len(referenceMetadata), len(samples), len(datasetMetadata)} - All lengths should be the same")
-    # for iterIndex in range(len(reference)):
-    #     if iterIndex in purgeIndexList:
-    #         # print(f"Purging: {reference[iterIndex]}")
-    #         # print(f"Where mean SHOULD be: {numpy.mean(reference[iterIndex])}")
-    #         reference.pop(iterIndex)
-    #         referenceMetadata.pop(iterIndex)
-    #         samples.pop(iterIndex)
-    #         datasetMetadata.pop(iterIndex)
-    # logger.debug(f"Lengths after purge: {len(reference), len(referenceMetadata), len(samples), len(datasetMetadata)} - All lengths should be the same")
-    # logger.info(f"Samples purged: {len(purgeIndexList)}")
-
-
+    # logger.debug(f"PostProcSamplesMetadata first 5:\n{postProcSamplesMetadata[:5]}")
+    # logger.debug(f"PostProcSamplesMetadata last 5:\n{postProcSamplesMetadata[-5:]}")
+    # logger.debug(f"PostProcSamplesMetadata length: {len(postProcSamplesMetadata)}")
+    # logger.debug(f"PostProcSamplesMetadata type: {type(postProcSamplesMetadata)}")
+    # logger.debug(f"PostProcSamples first 5:\n{postProcSamples[:5]}")
+    # logger.debug(f"PostProcSamples last 5:\n{postProcSamples[-5:]}")
+    # logger.debug(f"PostProcSamples length: {len(postProcSamples)}")
+    # logger.debug(f"PostProcSamples type: {type(postProcSamples)}")
+    # logger.debug(f"PostProcReferencesMetadata first 5:\n{postProcReferencesMetadata[:5]}")
+    # logger.debug(f"PostProcReferencesMetadata last 5:\n{postProcReferencesMetadata[-5:]}")
+    # logger.debug(f"PostProcReferencesMetadata length: {len(postProcReferencesMetadata)}")
+    # logger.debug(f"PostProcReferencesMetadata type: {type(postProcReferencesMetadata)}")
+    # logger.debug(f"PostProcReferences first 5:\n{postProcReferences[:5]}")
+    # logger.debug(f"PostProcReferences last 5:\n{postProcReferences[-5:]}")
+    # logger.debug(f"PostProcReferences length: {len(postProcReferences)}")
+    # logger.debug(f"PostProcReferences type: {type(postProcReferences)}")
 
     # Create list of dataset metadata and samples
     datasetList = [postProcSamplesMetadata, postProcSamples]
-    # logger.debug(f"datasetList length: {len(datasetList)}")
-    # logger.debug(f"datasetList type: {type(datasetList)}")
-    # logger.debug(f"datasetList shape: {len(datasetList[0])}")
-    # logger.debug(f"datasetList shape: {len(datasetList[1])}")
-    # logger.debug(f"datasetList shape: {len(datasetList[1][0])}")
-    # logger.debug(f"datasetList shape: {len(datasetList[0][1])}")
-    # logger.debug(f"datasetList shape: {len(datasetList[0][0][0])}")
-    # logger.debug(f"datasetList shape: {len(datasetList[0][0][0])}")
-    # logger.debug(datasetList)
+
     # Create list of reference metadata and data
     referenceList = [postProcReferencesMetadata, postProcReferences]
-
-    # logger.debug(f"datasetList first:\n{datasetList[:1]}")
-    # logger.debug(f"referenceList first:\n{referenceList[:1]}")
 
     # Create ouput directory
     if not os.path.exists(outputDirectory):
