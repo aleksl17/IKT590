@@ -34,8 +34,8 @@ def main():
     dims = 3
 
     currentTime = str(int(time.time()))
-    meta, x = data_manipulation.read_dataset(datasetFile='./dataset/dataset.json')
-    x = random.sample(x, 10000)
+    meta, x = data_manipulation.read_dataset(datasetFile='./datasets/dataset.json')
+    # x = random.sample(x, 10000)
     logger.debug(x)
     x = StandardScaler().fit_transform(x)
     pc = reduce(x, n_components=dims)
