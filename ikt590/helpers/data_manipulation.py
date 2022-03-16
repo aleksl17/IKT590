@@ -1,19 +1,20 @@
 import logging
 import pandas
+import numpy
 import time
 import json
 import os
+
+from datetime import datetime, timedelta
 
 import helpers.data_interpolate as data_interpolate
 import helpers.data_normalize as data_normalize
 
 # TODO:
 # Optimization: Use Numpy arrays instead of Python lists
-# NOTE
-# Reference and dataset might not align due to time-shift from interpolation.-
 
 
-def create_dataset(inputDirectory='./.tmpData/', outputDirectory='./.tmpData/', sample_size=40):
+def create_dataset(inputDirectory='./signals/', outputDirectory='./.tmpData/', sample_size=40, outlierMulti=3):
     """Manipulates data"""
     
     # Initalize logger
@@ -28,10 +29,12 @@ def create_dataset(inputDirectory='./.tmpData/', outputDirectory='./.tmpData/', 
     # Variables
     currentTime = str(int(time.time()))
     datasetList = []
-    datasetMetadata = []
-    samples = []
-    reference = []
-    referenceMetadata = []
+    samplesMetadata = []
+    referencesMetadata = []
+    postProcSamplesMetadata = []
+    postProcSamples = []
+    postProcReferencesMetadata = []
+    postProcReferences = []
 
     # Creates list of DataFrames from data from CSV files input directory
     for file in os.listdir(inputDirectory):
@@ -39,12 +42,26 @@ def create_dataset(inputDirectory='./.tmpData/', outputDirectory='./.tmpData/', 
             # Read files
             csvData = pandas.read_csv(os.path.join(inputDirectory, file))
             valueData = csvData['value'].tolist()
+            logger.debug(f"Read file: {file}")
 
             # Create reference "samples"
+            refTime = datetime.strptime(csvData['timestamp'][0], '%Y-%m-%dT%H:%M:%S')
+            referenceList = []
+            tmpReferenceList = []
+            tmpReferenceMetadataList = []
             for i in range(len(valueData)-sample_size):
-                reference.append(valueData[i:i+sample_size])
-                referenceMetadata.append([file.split('.csv')[0], csvData['timestamp'][i], valueData[i]])
-
+                referenceList.append(valueData[i:i+sample_size])
+                referencesMetadata.append([file.split('.csv')[0], str(refTime), valueData[i]])
+                refTime = refTime + timedelta(minutes=15)
+            refMax = numpy.mean(referenceList)*outlierMulti
+            for i, reference in enumerate(referenceList):
+                refMin = min(reference)
+                if refMin < refMax:
+                    tmpReferenceList.append(reference)
+                    tmpReferenceMetadataList.append(referencesMetadata[i])
+            postProcReferencesMetadata.extend(tmpReferenceMetadataList)
+            postProcReferences.extend(tmpReferenceList)
+            
             # Interpolate data and convert to python list
             intData = data_interpolate.interpolation(csvData)
             intData = intData.tolist()
@@ -53,24 +70,51 @@ def create_dataset(inputDirectory='./.tmpData/', outputDirectory='./.tmpData/', 
             normData = data_normalize.normalize(intData)
 
             # Split data into samples with overlap and create respective metadata tabel
+            sampleList = []
+            tmpSampleList = []
+            tmpSampleMetadataList = []
             for set in range(len(normData)-sample_size):
-                samples.append(normData[set:set+sample_size])
-                datasetMetadata.append([file.split('.csv')[0], csvData['timestamp'][set], normData[set]])
+                sampleList.append(normData[set:set+sample_size])
+                samplesMetadata.append([file.split('.csv')[0], csvData['timestamp'][set], normData[set]])
+            samMax = numpy.mean(sampleList)*outlierMulti
+            for i, sample in enumerate(sampleList):
+                samMin = min(sample)
+                if samMin < samMax:
+                    tmpSampleList.append(sample)
+                    tmpSampleMetadataList.append(samplesMetadata[i])
+            postProcSamplesMetadata.extend(tmpSampleMetadataList)
+            postProcSamples.extend(tmpSampleList)
 
-            # Create list of datasets
-            # datasetList.append([metadata, samples])
-    
+    # logger.debug(f"referencesMaxList: {referencesMaxList}")
+    # logger.debug(f"perFileSampleLengthList: {perFileSampleLengthList}")
+    # logger.debug(f"referencesMetadata length: {len(referencesMetadata)}")
+    # logger.debug(f"references length: {len(references)}")
+    # logger.debug(f"samplesMetadata length: {len(samplesMetadata)}")
+    # logger.debug(f"samples length: {len(samples)}")
+
+    # logger.debug(f"PostProcSamplesMetadata first 5:\n{postProcSamplesMetadata[:5]}")
+    # logger.debug(f"PostProcSamplesMetadata last 5:\n{postProcSamplesMetadata[-5:]}")
+    # logger.debug(f"PostProcSamplesMetadata length: {len(postProcSamplesMetadata)}")
+    # logger.debug(f"PostProcSamplesMetadata type: {type(postProcSamplesMetadata)}")
+    # logger.debug(f"PostProcSamples first 5:\n{postProcSamples[:5]}")
+    # logger.debug(f"PostProcSamples last 5:\n{postProcSamples[-5:]}")
+    # logger.debug(f"PostProcSamples length: {len(postProcSamples)}")
+    # logger.debug(f"PostProcSamples type: {type(postProcSamples)}")
+    # logger.debug(f"PostProcReferencesMetadata first 5:\n{postProcReferencesMetadata[:5]}")
+    # logger.debug(f"PostProcReferencesMetadata last 5:\n{postProcReferencesMetadata[-5:]}")
+    # logger.debug(f"PostProcReferencesMetadata length: {len(postProcReferencesMetadata)}")
+    # logger.debug(f"PostProcReferencesMetadata type: {type(postProcReferencesMetadata)}")
+    # logger.debug(f"PostProcReferences first 5:\n{postProcReferences[:5]}")
+    # logger.debug(f"PostProcReferences last 5:\n{postProcReferences[-5:]}")
+    # logger.debug(f"PostProcReferences length: {len(postProcReferences)}")
+    # logger.debug(f"PostProcReferences type: {type(postProcReferences)}")
+
     # Create list of dataset metadata and samples
-    datasetList = [datasetMetadata, samples]
+    datasetList = [postProcSamplesMetadata, postProcSamples]
+
     # Create list of reference metadata and data
-    referenceList = [referenceMetadata, reference]
+    referenceList = [postProcReferencesMetadata, postProcReferences]
 
-    # logger.debug(f"datasetList first:\n{datasetList[:1]}")
-    # logger.debug(f"referenceList first:\n{referenceList[:1]}")
-
-    # Create ouput directory
-    if not os.path.exists(outputDirectory):
-        os.makedirs(outputDirectory)
     # Write dataset
     with open(os.path.join(outputDirectory+'dataset-'+currentTime+'.json'), 'w') as filehandle:
         filehandle.write(json.dumps(datasetList))
