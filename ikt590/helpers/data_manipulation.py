@@ -14,7 +14,7 @@ import helpers.data_normalize as data_normalize
 # Optimization: Use Numpy arrays instead of Python lists
 
 
-def create_dataset(inputDirectory='./.tmpData/', outputDirectory='./.tmpData/', sample_size=40, outlierMulti=3):
+def create_dataset(inputDirectory='./signals/', outputDirectory='./.tmpData/', sample_size=40, outlierMulti=3):
     """Manipulates data"""
     
     # Initalize logger
@@ -115,9 +115,6 @@ def create_dataset(inputDirectory='./.tmpData/', outputDirectory='./.tmpData/', 
     # Create list of reference metadata and data
     referenceList = [postProcReferencesMetadata, postProcReferences]
 
-    # Create ouput directory
-    if not os.path.exists(outputDirectory):
-        os.makedirs(outputDirectory)
     # Write dataset
     with open(os.path.join(outputDirectory+'dataset-'+currentTime+'.json'), 'w') as filehandle:
         filehandle.write(json.dumps(datasetList))

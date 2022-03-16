@@ -18,14 +18,14 @@ def main():
     def reduce(xRed):
         som = SOM(m=3, n=1, dim=40)
         #som.fit(x)
-        som.fit(xRed, epochs=1, shuffle=True)
+        som.fit(xRed, epochs=1, shuffle=False)
         transformed = som.transform(xRed)
         return transformed
     
     dims = 3
 
     meta, dataset = data_manipulation.read_dataset(datasetFile='./dataset/dataset.json')
-    dataset = random.sample(dataset, 10000)
+    # dataset = random.sample(dataset, 10000)
     x = np.asarray(dataset)
 
     currentTime = str(int(time.time()))
