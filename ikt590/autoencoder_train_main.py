@@ -31,7 +31,7 @@ sample_size = 40
 
 meta, dataset = data_manipulation.read_dataset(datasetFile='datasets/dataset.json')
 
-dataset = random.sample(dataset, 10000)
+# dataset = random.sample(dataset, 10000)
 dataset = np.asarray(dataset)
 
 x = []
