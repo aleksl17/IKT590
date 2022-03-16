@@ -11,13 +11,13 @@ import helpers.data_manipulation as data_manipulation
 # Disables GPU
 # os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
-batches = 10
+batches = 1000
 batch_size = 10000
 batch_epoch = 1000
 load_old_models = False
 
-def train_batch(x, model, epochs):
-    x = random.sample(x,1000)
+# def train_batch(x, model, epochs):
+#     x = random.sample(x,1000)
 
 #get data
 dataset = []
