@@ -1,32 +1,23 @@
-# from DataScripts.interpolate import interpolation
 from operator import mod
 from turtle import color
 from tensorflow.keras.models import Sequential, load_model
 import matplotlib.pyplot as plt
 import numpy as np
 import random
-import pandas
-import sys
-import os
 
 import helpers.autoencoder_models as autoencoder_models
+import helpers.data_manipulation as data_manipulation
 
 # Disables GPU
-os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
-
-# sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-import helpers.data_interpolate as data_interpolate
-import helpers.data_manipulation as data_manipulation
+# os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 batches = 10
 batch_size = 10000
 batch_epoch = 1000
 load_old_models = False
 
-
 def train_batch(x, model, epochs):
     x = random.sample(x,1000)
-
 
 #get data
 dataset = []
@@ -51,12 +42,10 @@ for d in dataset:
     x.append((d - minVal)/(max(d)-minVal))
     # x.append(d/max(d))
 
-
 # x = np.array(x)
 if load_old_models:
     encoder = load_model('models/encoder')
     decoder = load_model('models/decoder')
-
 else:    
     #define models
     encoder, decoder = autoencoder_models.getModels(sample_size, 3)
@@ -89,10 +78,9 @@ for i in range(batches):
     encoder.save('models/encoder')
     decoder.save('models/decoder')
 
-
-plt.plot(loss_list)
-plt.show()
-plt.clf()
+# plt.plot(loss_list)
+# plt.show()
+# plt.clf()
 #train once on all
 print("Training once on all data")
 x = np.array(x)
@@ -100,7 +88,7 @@ history = model.fit(x.reshape(x.shape[0], x.shape[1], 1),x, epochs=batch_epoch, 
 x_test = x[:10]
 pred = model.predict(x_test)
 
-for i in range(len(x_test)):
-    plt.plot(x_test[i], color='r')
-    plt.plot(pred[i], color='b')
-    plt.show()
+# for i in range(len(x_test)):
+#     plt.plot(x_test[i], color='r')
+#     plt.plot(pred[i], color='b')
+#     plt.show()
