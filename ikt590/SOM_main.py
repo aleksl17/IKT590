@@ -11,20 +11,28 @@ import random
 import pandas
 import time
 import os
+import logging
+import time
 
 
 def main():
+    # Initialize logging
+    if not os.path.exists('./.logs'):
+        os.makedirs('./.logs')
+    currentTime = str(int(time.time()))
+    logFile = os.path.join('./.logs/' + currentTime + '.log')
+    logging.basicConfig(filename=logFile, format='%(asctime)s %(levelname)s %(name)-8s %(message)s', datefmt='%Y-%m-%d %H:%M:%S', level=logging.DEBUG)
 
     def reduce(xRed):
         som = SOM(m=3, n=1, dim=40)
         #som.fit(x)
-        som.fit(xRed, epochs=1, shuffle=False)
+        som.fit(xRed, epochs=10, shuffle=False)
         transformed = som.transform(xRed)
         return transformed
     
     dims = 3
 
-    meta, dataset = data_manipulation.read_dataset(datasetFile='./dataset/dataset.json')
+    meta, dataset = data_manipulation.read_dataset(datasetFile='./datasets/dataset.json')
     # dataset = random.sample(dataset, 10000)
     x = np.asarray(dataset)
 
@@ -32,20 +40,24 @@ def main():
     # x = data()
 
     x = StandardScaler().fit_transform(x)
+    print("Before reduce")
+    logging.debug("Before reduce")
     som = reduce(x)
-
-    if not os.path.exists('results'):
-        os.makedirs('results')
+    print("After reduce")
+    logging.debug("After reduce")
     
-    ax = plt.axes(projection='3d')
-    for point in som:
-        ax.scatter3D(point[0],point[1],point[2])
+    # ax = plt.axes(projection='3d')
+    # for point in som:
+    #     ax.scatter3D(point[0],point[1],point[2])
 
-    if not os.path.exists('results'):
-        os.makedirs('results')
-    plt.savefig(f'results/som_{currentTime}')
+    # if not os.path.exists('results'):
+    #     os.makedirs('results')
+    # plt.savefig(f'results/som_{currentTime}')
 
+    if not os.path.exists('reducedDims/som'):
+        os.makedirs('reducedDims/som')
     np.save(f'reducedDims/som/{currentTime}', som)
+    print("Done!")
 
 
 if __name__ == "__main__":

@@ -27,39 +27,41 @@ def main():
         pca = pca.fit(xRed)
         pc = pca.transform(xRed)
         return pc
-
-    if not os.path.exists('reducedDims/pca'):
-        os.makedirs('reducedDims/pca')
     
     dims = 3
 
     currentTime = str(int(time.time()))
     meta, x = data_manipulation.read_dataset(datasetFile='./datasets/dataset.json')
     # x = random.sample(x, 10000)
-    logger.debug(x)
+    # logger.debug(x)
     x = StandardScaler().fit_transform(x)
+    print("Before reduce")
+    logger.debug("Before reduce")
     pc = reduce(x, n_components=dims)
+    print("After reduce")
+    logger.debug("After reduce")
 
-    if not os.path.exists('results'):
-        os.makedirs('results')
-    if not os.path.exists('results/pcaResults'):
-        os.makedirs('results/pcaResults')
+    # if not os.path.exists('results'):
+    #     os.makedirs('results')
+    # if not os.path.exists('results/pcaResults'):
+    #     os.makedirs('results/pcaResults')
     if not os.path.exists('reducedDims/pca'):
         os.makedirs('reducedDims/pca')
 
-    if dims == 2:
-        for point in pc:
-            plt.scatter(point[0],point[1])
-        
-        plt.savefig(f'results/pcaResults/pca_{currentTime}')
-    if dims == 3:
-        ax = plt.axes(projection='3d')
-        for point in pc:
-            ax.scatter3D(point[0],point[1],point[2])
-        
-        plt.savefig(f'results/pcaResults/pca_{currentTime}')
+    # if dims == 2:
+    #    for point in pc:
+    #        plt.scatter(point[0],point[1])
+    #    
+    #    plt.savefig(f'results/pcaResults/pca_{currentTime}')
+    # if dims == 3:
+    #    ax = plt.axes(projection='3d')
+    #    for point in pc:
+    #        ax.scatter3D(point[0],point[1],point[2])
+    #    
+    #    plt.savefig(f'results/pcaResults/pca_{currentTime}')
 
     np.save(f'reducedDims/pca/{currentTime}', pc)
+    print("Done!")
 
 
 if __name__ == "__main__":
