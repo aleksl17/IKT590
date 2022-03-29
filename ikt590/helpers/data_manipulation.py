@@ -14,7 +14,7 @@ import helpers.data_normalize as data_normalize
 # Optimization: Use Numpy arrays instead of Python lists
 
 
-def create_dataset(inputDirectory='./signals/', outputDirectory='./.tmpData/', sample_size=40, outlierMulti=3):
+def create_dataset(inputDirectory='./signals/', outputDirectory='./.tmpData/', sample_size=40, step_size=20, outlierMulti=3):
     """Manipulates data"""
     
     # Initalize logger
@@ -49,7 +49,7 @@ def create_dataset(inputDirectory='./signals/', outputDirectory='./.tmpData/', s
             referenceList = []
             tmpReferenceList = []
             tmpReferenceMetadataList = []
-            for i in range(len(valueData)-sample_size):
+            for i in range(len(valueData)-sample_size, step_size):
                 referenceList.append(valueData[i:i+sample_size])
                 referencesMetadata.append([file.split('.csv')[0], str(refTime), valueData[i]])
                 refTime = refTime + timedelta(minutes=15)
@@ -73,7 +73,7 @@ def create_dataset(inputDirectory='./signals/', outputDirectory='./.tmpData/', s
             sampleList = []
             tmpSampleList = []
             tmpSampleMetadataList = []
-            for set in range(len(normData)-sample_size):
+            for set in range(len(normData)-sample_size, step_size):
                 sampleList.append(normData[set:set+sample_size])
                 samplesMetadata.append([file.split('.csv')[0], csvData['timestamp'][set], normData[set]])
             samMax = numpy.mean(sampleList)*outlierMulti
