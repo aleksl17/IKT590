@@ -26,6 +26,8 @@ def performance_for_algorithm(name, PCAx, PCAy, AEx, AEy, SOMx, SOMy, saveFig = 
     if saveFig:
         # fig = plt.figure()
         fig, ax = plt.subplots(nrows=1, ncols=3)
+        wi, hi = fig.get_size_inches()
+        fig.set_size_inches(wi*2,hi)
         for i in range(len(scores)):
             ax[i].bar(['PCA', 'Autoencoder', 'SOM'], [PCA[i], AE[i], SOM[i]], color=['gold','aquamarine','indigo'])
             ax[i].tick_params(labelrotation=20)
