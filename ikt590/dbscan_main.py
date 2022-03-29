@@ -30,41 +30,41 @@ def main():
         logger.debug(f'Kmeans for {reduction}')
         dbscan_pred = dbscan(x)
 
-        # colors = ['r','b','g','y','m','c','k']
-        colors = ['lightcoral', 'red', 'darkred', 'chocolate', 'bisque', 'darkorange', 'gold', 'yellow', 'olive', 'darkgreen', 'lime', 'aquamarine', 'teal', 'cyan', 'lightblue', 'steelblue', 'navy', 'blue', 'indigo', 'violet', 'purple', 'crimson', 'pink']
-        random.shuffle(colors)
+        # colors = ['lightcoral', 'red', 'darkred', 'chocolate', 'bisque', 'darkorange', 'gold', 'yellow', 'olive', 'darkgreen', 'lime', 'aquamarine', 'teal', 'cyan', 'lightblue', 'steelblue', 'navy', 'blue', 'indigo', 'violet', 'purple', 'crimson', 'pink']
+        # random.shuffle(colors)
 
-        ax = plt.axes(projection='3d')
-        for point, c in zip(x, dbscan_pred):
-            ax.scatter3D(point[0], point[1], point[2], c=colors[c])
+        # ax = plt.axes(projection='3d')
+        # for point, c in zip(x, dbscan_pred):
+        #     ax.scatter3D(point[0], point[1], point[2], c=colors[c])
         
-        logger.debug("Loading Figure")
-        plt.title(f'DBSCAN on {reduction}')
-        plt.savefig(os.path.join(figDir + "DBSCAN-" + reduction + '-' + currentTime))
-        plt.clf()
+        # logger.debug("Loading Figure")
+        # plt.title(f'DBSCAN on {reduction}')
+        # plt.savefig(os.path.join(figDir + "DBSCAN-" + reduction + '-' + currentTime))
+        # plt.clf()
 
         return dbscan_pred
 
     #PCA
     print("here")
     logging.info('Staging PCA')
-    xPCA = np.load('reducedDims/pca/1644398105.npy').tolist()
-    xPCA = random.sample(xPCA, 10000)
+    xPCA = np.load('reducedDims/pca/1647943391.npy').tolist()
+    # xPCA = random.sample(xPCA, 10000)
     PCA_pred = cluster(xPCA, 'pca', k=3)
     
     #Autoencoder
     logging.info('Staging AE')
-    xAE = np.load('reducedDims/autoencoder/1644507397.npy').tolist()
-    xAE = random.sample(xAE, 10000)
+    xAE = np.load('reducedDims/autoencoder/1648539976.npy').tolist()
+    # xAE = random.sample(xAE, 10000)
     AE_pred = cluster(xAE, 'autoencoder', k=3)
 
     #SOM
     logging.info('Staging SOM')
-    xSOM = np.load('reducedDims/som/1644406419.npy').tolist()
-    xSOM = random.sample(xSOM, 10000)
+    xSOM = np.load('reducedDims/som/1647943531.npy').tolist()
+    # xSOM = random.sample(xSOM, 10000)
     SOM_pred  = cluster(xSOM, 'SOM', k=3)
 
     performance = performance_for_algorithm('DBSCAN', xPCA, PCA_pred, xAE, AE_pred, xSOM, SOM_pred)
+    np.save(os.path.join('results/dbscan/' + currentTime), performance)
 
 
 if __name__ == "__main__":

@@ -11,6 +11,9 @@ import sys
 import os
 import logging
 
+# Disables GPU
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+
 # helper_folder = "ikt590/autoencoder"
 
 def main():
