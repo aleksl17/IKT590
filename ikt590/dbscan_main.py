@@ -53,7 +53,7 @@ def main():
     
     #Autoencoder
     logging.info('Staging AE')
-    xAE = np.load('reducedDims/autoencoder/1644507397.npy').tolist()
+    xAE = np.load('reducedDims/autoencoder/1648539976.npy').tolist()
     # xAE = random.sample(xAE, 10000)
     AE_pred = cluster(xAE, 'autoencoder', k=3)
 

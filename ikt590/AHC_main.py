@@ -28,7 +28,7 @@ def main():
 
         # Color palette made with: https://mokole.com/palette.html
         # Settings: 16, 5%, 90%, 15000. Result: Percieved distance of 50.84, 46233 loops
-        colors = ['darkslategray','maroon2', 'darkgreen', 'darkkhaki', 'darkblue', 'red', 'darkturquoise', 'orange', 'yellow', 'lime', 'mediumspringgreen', 'blue', 'thistle', 'fuchsia', 'dodgerblue', 'deeppink']
+        colors = ['darkslategray','maroon', 'darkgreen', 'darkkhaki', 'darkblue', 'red', 'darkturquoise', 'orange', 'yellow', 'lime', 'mediumspringgreen', 'blue', 'thistle', 'fuchsia', 'dodgerblue', 'deeppink']
         
         ax = plt.axes(projection='3d')
         for point, c in zip(x, dbscan_pred):
