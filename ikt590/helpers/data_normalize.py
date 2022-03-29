@@ -10,7 +10,7 @@ def normalize(input_data):
 
     # Convert 1D list to 2D list where every element is its own list
     values = list(map(lambda el:[el], input_data))
-    logger.debug(f"Values:\nFirst 5:\n{values[:5]}\nLast 5:\n{values[-5:]}")
+    logger.debug(f"Values:\nFirst 10:\n{values[:10]}\nLast 10:\n{values[-10:]}")
 
     # Initialize and fit scaler
     scaler = MinMaxScaler()
@@ -19,7 +19,7 @@ def normalize(input_data):
 
     # Normalize data
     normalized = scaler.transform(values)
-    logger.debug(f"Normalized Data:\nFirst 5:\n{normalized[:5]}\nLast 5:\n{normalized[-5:]}")
+    logger.debug(f"Normalized Data:\nFirst 10:\n{normalized[:10]}\nLast 10:\n{normalized[-10:]}")
 
     # Flatten data and convert to python list
     normalized = normalized.flatten()
