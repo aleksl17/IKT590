@@ -31,6 +31,8 @@ def create_dataset(inputDirectory='./signals/', outputDirectory='./.tmpData/', s
     datasetList = []
     samplesMetadata = []
     referencesMetadata = []
+    allSamples = []
+    allReferences = []
     # postProcSamplesMetadata = []
     # postProcSamples = []
     # postProcReferencesMetadata = []
@@ -61,6 +63,7 @@ def create_dataset(inputDirectory='./signals/', outputDirectory='./.tmpData/', s
             #         tmpReferenceMetadataList.append(referencesMetadata[i])
             # postProcReferencesMetadata.extend(tmpReferenceMetadataList)
             # postProcReferences.extend(tmpReferenceList)
+            allReferences.extend(referenceList)
             
             # Interpolate data and convert to python list
             intData = data_interpolate.interpolation(csvData)
@@ -86,6 +89,7 @@ def create_dataset(inputDirectory='./signals/', outputDirectory='./.tmpData/', s
             #         tmpSampleMetadataList.append(samplesMetadata[i])
             # postProcSamplesMetadata.extend(tmpSampleMetadataList)
             # postProcSamples.extend(tmpSampleList)
+            allSamples.extend(sampleList)
 
     # Debug checks
     # logger.debug(f"referencesMaxList: {referencesMaxList}")
@@ -113,11 +117,11 @@ def create_dataset(inputDirectory='./signals/', outputDirectory='./.tmpData/', s
     # logger.debug(f"PostProcReferences type: {type(postProcReferences)}")
 
     # Create list of dataset metadata and samples
-    datasetList = [samplesMetadata, sampleList]
+    datasetList = [samplesMetadata, allSamples]
     # datasetList = [postProcSamplesMetadata, postProcSamples]
 
     # Create list of reference metadata and data
-    referenceList = [referencesMetadata, referenceList]
+    referenceList = [referencesMetadata, allReferences]
     # referenceList = [postProcReferencesMetadata, postProcReferences]
 
     # Write dataset
