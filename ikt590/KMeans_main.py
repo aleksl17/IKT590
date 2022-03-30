@@ -1,8 +1,11 @@
+from turtle import color
 import helpers.data_manipulation as data_manipulation
 from performance import performance_for_algorithm
 from sklearn.cluster import KMeans
 import matplotlib.pyplot as plt
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as LDA
 import numpy as np
+import pandas as pd
 import random
 import logging
 import time
@@ -34,14 +37,49 @@ def main():
 
         colors = ['blue','red', 'yellow', 'green', 'fuchsia', 'red', 'darkturquoise', 'orange', 'yellow', 'lime', 'mediumspringgreen', 'blue', 'thistle', 'fuchsia', 'dodgerblue', 'deeppink']
 
-        ax = plt.axes(projection='3d')
-        for point, c in zip(x, kmeans_pred):
-            ax.scatter3D(point[0], point[1], point[2], color=colors[c])
-        
+        # plt.clf()
+        # ax = plt.axes(projection='3d')
+        # # for point, c in zip(x, kmeans_pred):
+        # #     ax.scatter3D(point[0], point[1], point[2], color=colors[c], label=c)
+
+        # for i in range(k):
+        #     scatx = []
+        #     scaty = []
+        #     scatz = []
+        #     for j in range(len(kmeans_pred)):
+        #         if kmeans_pred[j] == i:
+        #             scatx.append(x[j][0])
+        #             scaty.append(x[j][1])
+        #             scatz.append(x[j][2])
+            
+           
+        #     ax.scatter(scatx,scaty,scatz, color=colors[i])
+        # # scatter = ax.scatter3D(x,color=colors[kmeans_pred])
+        # ax.legend(list(range(k)))
+        # logger.debug("Loading Figure")
+        # plt.title(f'K-Means on {reduction}')
+        # plt.savefig(os.path.join(figDir + "KMeans-" + reduction + '-' + currentTime))
+        # # plt.show()
+
+
+        #LDA
+        lda = LDA(n_components=2)
+        lda_transformed = pd.DataFrame(lda.fit_transform(x, kmeans_pred))
+        print(lda_transformed)
+
+        plt.clf()
+        fig, ax = plt.subplots(1)
+        wi, hi = fig.get_size_inches()
+        fig.set_size_inches(wi,hi)
+
+        for i in range(k):
+            ax.scatter(lda_transformed[kmeans_pred == i][0], lda_transformed[kmeans_pred == i][1], color=colors[i])
+        # scatter = ax.scatter3D(x,color=colors[kmeans_pred])
+        ax.legend(list(range(k)))
         logger.debug("Loading Figure")
         plt.title(f'K-Means on {reduction}')
         plt.savefig(os.path.join(figDir + "KMeans-" + reduction + '-' + currentTime))
-        plt.clf()
+        # plt.show()
 
         return kmeans_pred
     
@@ -71,8 +109,8 @@ def main():
 
     #PCA
     logging.info('Staging PCA')
-    xPCA = np.load('reducedDims/pca/1647943391.npy').tolist()
-    tmpData, xPCA = zip(*random.sample(list(zip(dataset, xPCA)),100))
+    xPCA = np.load('reducedDims/pca/1648634711.npy').tolist()
+    tmpData, xPCA = zip(*random.sample(list(zip(dataset, xPCA)),1000))
 
     PCA_pred = cluster(xPCA, 'pca', k=4)
 
@@ -96,9 +134,9 @@ def main():
 
     #Autoencoder
     logging.info('Staging AE')
-    xAE = np.load('reducedDims/autoencoder/1648023850.npy').tolist()
+    xAE = np.load('reducedDims/autoencoder/1648632780.npy').tolist()
 
-    tmpData, xAE = zip(*random.sample(list(zip(dataset, xAE)),100))
+    tmpData, xAE = zip(*random.sample(list(zip(dataset, xAE)),1000))
 
     AE_pred = cluster(xAE, 'autoencoder', k=4)
 
@@ -120,9 +158,9 @@ def main():
 
     #SOM
     logging.info('Staging SOM')
-    xSOM = np.load('reducedDims/som/1647943531.npy').tolist()
+    xSOM = np.load('reducedDims/som/1648633743.npy').tolist()
 
-    tmpData, xSOM = zip(*random.sample(list(zip(dataset, xSOM)),100))
+    tmpData, xSOM = zip(*random.sample(list(zip(dataset, xSOM)),1000))
     
     SOM_pred  = cluster(xSOM, 'SOM', k=5)
     
