@@ -68,8 +68,9 @@ def create_dataset(inputDirectory='./signals/', outputDirectory='./.tmpData/', s
             # Interpolate data and convert to python list
             intData = data_interpolate.interpolation(csvData)
             intData = intData.tolist()
-            with open(f".tmpData/{file}_{currentTime}.json", "w") as wfh:
-                wfh.write(json.dumps(intData))
+            # Dump per file data
+            # with open(f".tmpData/{file}_{currentTime}.json", "w") as wfh:
+            #     wfh.write(json.dumps(intData))
             
             # Normalize data
             normData = data_normalize.normalize(intData)
