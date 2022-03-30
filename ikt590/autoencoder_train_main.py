@@ -1,9 +1,8 @@
 import numpy as np
+import tensorflow
 import datetime
 import random
 import os
-
-from tensorflow.keras.models import Sequential, load_model
 
 import helpers.autoencoder_models as autoencoder_models
 import helpers.data_manipulation as data_manipulation
@@ -15,9 +14,9 @@ os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 def main():
     # Variables
-    batches = 10
     batch_size = 10000
     batch_epoch = 1000
+    batches = 100
     sample_size = 40
     output_size = 3
     load_old_models = False
@@ -35,14 +34,14 @@ def main():
 
     # Define models
     if load_old_models:
-        encoder = load_model('models/encoder')
-        decoder = load_model('models/decoder')
+        encoder = tensorflow.keras.models.load_model('models/encoder')
+        decoder = tensorflow.keras.models.load_model('models/decoder')
     else:    
         encoder, decoder = autoencoder_models.getModels(sample_size, output_size)
         encoder._name = "encoder"
         decoder._name = "decoder"
 
-    model = Sequential()
+    model = tensorflow.keras.models.Sequential()
     model.add(encoder)
     model.add(decoder)
     model.compile(optimizer='adam', loss='mse')
@@ -53,7 +52,7 @@ def main():
         print(f'Total training epochs: {i * batch_epoch}. Total training data: {i*batch_size}')
         print(f'Time: {datetime.datetime.now()}')
         x0 = np.array(random.sample(x,batch_size))
-        history = model.fit(x0.reshape(x0.shape[0], x0.shape[1], 1),x0, epochs=batch_epoch, shuffle=True, verbose=0)
+        history = model.fit(x0.reshape(x0.shape[0], x0.shape[1], 1),x0, epochs=batch_epoch, shuffle=True, verbose=1)
         loss = sum(history.history['loss']) / len(history.history['loss'])
 
         print(f'Loss for batch {i}: {loss }')
