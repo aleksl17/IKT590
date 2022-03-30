@@ -9,7 +9,7 @@ import helpers.autoencoder_models as autoencoder_models
 import helpers.data_manipulation as data_manipulation
 
 # Disables GPU
-# os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 batches = 1000
 batch_size = 10000
