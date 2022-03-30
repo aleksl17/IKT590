@@ -62,14 +62,14 @@ def main():
 
             print(f'Loss for batch {i}: {loss }')
             print(f'Saving models for batch: {i}')
-            
+
             encoder.save('models/encoder')
             decoder.save('models/decoder')
     else:
         # All data
         x = np.asarray(x)
         model.fit(x.reshape(x.shape[0], x.shape[1], 1), x, epochs=epochs, shuffle=True, verbose=1)
-        encoder.save('mpdels/encoder')
+        encoder.save('models/encoder')
         decoder.save('models/decoder')
 
 
