@@ -33,7 +33,7 @@ def main():
     #     data = interpolate.interpolation(csvData)
     #     for i in range(len(data)-sample_size):
     #         dataset.append(data[i:i + sample_size])
-    meta, dataset = data_manipulation.read_dataset(datasetFile='./datasets/dataset.json')
+    meta, dataset = data_manipulation.read_dataset(datasetFile='./datasets/V2.0/dataset.json')
 
     x = []
     # dataset = random.sample(dataset, 10000)
@@ -47,9 +47,9 @@ def main():
     x = np.array(x)
 
     # model = load_model(f"{helper_folder}/encoder")
-    model = load_model('models/encoder')
-    model.build()
-    model.compile(run_eagerly=True)
+    model = load_model('models/V2.0/encoder')
+    # model.build()
+    # model.compile(run_eagerly=True)
 
     print("Before predict")
     logging.debug("Before predict")
