@@ -28,10 +28,10 @@ def main():
         pc = pca.transform(xRed)
         return pc
     
-    dims = 3
+    dims = 10
 
     currentTime = str(int(time.time()))
-    meta, x = data_manipulation.read_dataset(datasetFile='./datasets/dataset.json')
+    meta, x = data_manipulation.read_dataset(datasetFile='./datasets/V2.0/dataset.json')
     # x = random.sample(x, 10000)
     # logger.debug(x)
     x = StandardScaler().fit_transform(x)

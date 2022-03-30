@@ -30,9 +30,9 @@ def main():
         transformed = som.transform(xRed)
         return transformed
     
-    dims = 3
+    dims = 10
 
-    meta, dataset = data_manipulation.read_dataset(datasetFile='./datasets/dataset.json')
+    meta, dataset = data_manipulation.read_dataset(datasetFile='./datasets/V2.0/dataset.json')
     # dataset = random.sample(dataset, 10000)
     x = np.asarray(dataset)
 

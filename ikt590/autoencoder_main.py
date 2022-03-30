@@ -33,7 +33,7 @@ def main():
     #     data = interpolate.interpolation(csvData)
     #     for i in range(len(data)-sample_size):
     #         dataset.append(data[i:i + sample_size])
-    meta, dataset = data_manipulation.read_dataset(datasetFile='./datasets/dataset.json')
+    meta, dataset = data_manipulation.read_dataset(datasetFile='./datasets/V2.0/dataset.json')
 
     x = []
     # dataset = random.sample(dataset, 10000)
@@ -65,11 +65,11 @@ def main():
     print("Done!")
     logging.debug("Done!")
 
-    # ax = plt.axes(projection='3d')
-    # for point in reduced_dims:
-    #         ax.scatter3D(point[0],point[1],point[2])
+    ax = plt.axes(projection='3d')
+    for point in reduced_dims:
+            ax.scatter3D(point[0],point[1],point[2])
 
-    # plt.show()
+    plt.show()
 
 if __name__ == "__main__":
     main()
