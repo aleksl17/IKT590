@@ -4,6 +4,7 @@ from tensorflow.keras.models import Sequential, load_model
 import matplotlib.pyplot as plt
 import numpy as np
 import random
+import os
 
 import helpers.autoencoder_models as autoencoder_models
 import helpers.data_manipulation as data_manipulation
