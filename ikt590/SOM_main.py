@@ -32,7 +32,7 @@ def main():
     
     dims = 3
 
-    meta, dataset = data_manipulation.read_dataset(datasetFile='./datasets/dataset.json')
+    meta, dataset = data_manipulation.read_dataset(datasetFile='./datasets/V2.0/dataset.json')
     # dataset = random.sample(dataset, 10000)
     x = np.asarray(dataset)
 
@@ -40,6 +40,7 @@ def main():
     # x = data()
 
     x = StandardScaler().fit_transform(x)
+    
     print("Before reduce")
     logging.debug("Before reduce")
     som = reduce(x)
