@@ -1,9 +1,9 @@
-from turtle import color
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as LDA
 import helpers.data_manipulation as data_manipulation
 from performance import performance_for_algorithm
 from sklearn.cluster import KMeans
 import matplotlib.pyplot as plt
-from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as LDA
+from turtle import color
 import numpy as np
 import pandas as pd
 import random
@@ -23,10 +23,6 @@ def main():
 
     def kMeans(x, k=3, all=False):
         kmeans = KMeans(n_clusters = k)
-        # labels = kmeans.labels_
-        # # [0,1,0,2,0,1,1]
-        # pred = kmeans.predict(x)
-        # # [1,0,1,2,,1111]
         
         kmeans.fit(x)
         return kmeans.predict(x)
@@ -36,31 +32,6 @@ def main():
         kmeans_pred = kMeans(x,k, False)
 
         colors = ['blue','red', 'yellow', 'green', 'fuchsia', 'red', 'darkturquoise', 'orange', 'yellow', 'lime', 'mediumspringgreen', 'blue', 'thistle', 'fuchsia', 'dodgerblue', 'deeppink']
-
-        # plt.clf()
-        # ax = plt.axes(projection='3d')
-        # # for point, c in zip(x, kmeans_pred):
-        # #     ax.scatter3D(point[0], point[1], point[2], color=colors[c], label=c)
-
-        # for i in range(k):
-        #     scatx = []
-        #     scaty = []
-        #     scatz = []
-        #     for j in range(len(kmeans_pred)):
-        #         if kmeans_pred[j] == i:
-        #             scatx.append(x[j][0])
-        #             scaty.append(x[j][1])
-        #             scatz.append(x[j][2])
-            
-           
-        #     ax.scatter(scatx,scaty,scatz, color=colors[i])
-        # # scatter = ax.scatter3D(x,color=colors[kmeans_pred])
-        # ax.legend(list(range(k)))
-        # logger.debug("Loading Figure")
-        # plt.title(f'K-Means on {reduction}')
-        # plt.savefig(os.path.join(figDir + "KMeans-" + reduction + '-' + currentTime))
-        # # plt.show()
-
 
         #LDA
         lda = LDA(n_components=2)
@@ -112,12 +83,12 @@ def main():
     xPCA = np.load('reducedDims/pca/1648634711.npy').tolist()
     tmpData, xPCA = zip(*random.sample(list(zip(dataset, xPCA)),1000))
 
-    PCA_pred = cluster(xPCA, 'pca', k=4)
+    PCA_pred = cluster(xPCA, 'pca', k=15)
 
     plt.clf()
-    fig, axs = plt.subplots(4)
+    fig, axs = plt.subplots(15)
     wi, hi = fig.get_size_inches()
-    fig.set_size_inches(wi,hi*2)
+    fig.set_size_inches(wi,hi*5)
     fig.suptitle('clusters')
 
     for i, ax in enumerate(axs):
@@ -138,12 +109,12 @@ def main():
 
     tmpData, xAE = zip(*random.sample(list(zip(dataset, xAE)),1000))
 
-    AE_pred = cluster(xAE, 'autoencoder', k=4)
+    AE_pred = cluster(xAE, 'autoencoder', k=15)
 
     plt.clf()
-    fig, axs = plt.subplots(4)
+    fig, axs = plt.subplots(15)
     wi, hi = fig.get_size_inches()
-    fig.set_size_inches(wi,hi*2)
+    fig.set_size_inches(wi,hi*5)
     fig.suptitle('clusters')
 
     for i, ax in enumerate(axs):
@@ -162,12 +133,12 @@ def main():
 
     tmpData, xSOM = zip(*random.sample(list(zip(dataset, xSOM)),1000))
     
-    SOM_pred  = cluster(xSOM, 'SOM', k=5)
+    SOM_pred  = cluster(xSOM, 'SOM', k=15)
     
     plt.clf()
-    fig, axs = plt.subplots(5)
+    fig, axs = plt.subplots(15)
     wi, hi = fig.get_size_inches()
-    fig.set_size_inches(wi,hi*2)
+    fig.set_size_inches(wi,hi*5)
     fig.suptitle('clusters')
 
     for i, ax in enumerate(axs):
