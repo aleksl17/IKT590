@@ -71,13 +71,17 @@ def main():
 
     #PCA
     logging.info('Staging PCA')
-    xPCA = np.load('reducedDims/pca/1647943391.npy').tolist()
-    tmpData, xPCA = zip(*random.sample(list(zip(dataset, xPCA)),100))
+    xPCA = np.load('reducedDims/pca/V2.0/pca.npy').tolist()
+    tmpData, xPCA = zip(*random.sample(list(zip(dataset, xPCA)),1000))
 
-    PCA_pred = cluster(xPCA, 'pca', k=4)
+    PCA_pred = cluster(xPCA, 'pca', k=10)
+    # save_data = np.asarray([xPCA, tmpData, PCA_pred],dtype=object)
+    np.save(f"./saved_clusters/pca/x_{currentTime}",xPCA)
+    np.save(f"./saved_clusters/pca/data_{currentTime}",tmpData)
+    np.save(f"./saved_clusters/pca/pred_{currentTime}",PCA_pred)
 
     plt.clf()
-    fig, axs = plt.subplots(4)
+    fig, axs = plt.subplots(10)
     wi, hi = fig.get_size_inches()
     fig.set_size_inches(wi,hi*2)
     fig.suptitle('clusters')
@@ -93,57 +97,60 @@ def main():
     # plt.show()
     
 
-
-    #Autoencoder
-    logging.info('Staging AE')
-    xAE = np.load('reducedDims/autoencoder/1648023850.npy').tolist()
-
-    tmpData, xAE = zip(*random.sample(list(zip(dataset, xAE)),100))
-
-    AE_pred = cluster(xAE, 'autoencoder', k=4)
-
-    plt.clf()
-    fig, axs = plt.subplots(4)
-    wi, hi = fig.get_size_inches()
-    fig.set_size_inches(wi,hi*2)
-    fig.suptitle('clusters')
-
-    for i, ax in enumerate(axs):
-        ax.set_title("Cluster: " + str(i))
-
-    for c, s in zip(AE_pred, tmpData):
-        axs[c].plot(s, color='black', alpha=.2)
     
-    fig.tight_layout()
-    plt.savefig(os.path.join('./.figs/' + "KMeans-AE-real"  + currentTime))
-    # plt.show()
+    # #Autoencoder
+    # logging.info('Staging AE')
+    # xAE = np.load('reducedDims/autoencoder/V2.0/autoencoder.npy').tolist()
 
-    #SOM
-    logging.info('Staging SOM')
-    xSOM = np.load('reducedDims/som/1647943531.npy').tolist()
+    # tmpData, xAE = zip(*random.sample(list(zip(dataset, xAE)),100))
 
-    tmpData, xSOM = zip(*random.sample(list(zip(dataset, xSOM)),100))
+    # AE_pred = cluster(xAE, 'autoencoder', k=4)
+    # # np.save(f"./saved_clusters/ae/{currentTime}",save_data)
+
+    # plt.clf()
+    # fig, axs = plt.subplots(4)
+    # wi, hi = fig.get_size_inches()
+    # fig.set_size_inches(wi,hi*2)
+    # fig.suptitle('clusters')
+
+    # for i, ax in enumerate(axs):
+    #     ax.set_title("Cluster: " + str(i))
+
+    # for c, s in zip(AE_pred, tmpData):
+    #     axs[c].plot(s, color='black', alpha=.2)
     
-    SOM_pred  = cluster(xSOM, 'SOM', k=5)
-    
-    plt.clf()
-    fig, axs = plt.subplots(5)
-    wi, hi = fig.get_size_inches()
-    fig.set_size_inches(wi,hi*2)
-    fig.suptitle('clusters')
+    # fig.tight_layout()
+    # plt.savefig(os.path.join('./.figs/' + "KMeans-AE-real"  + currentTime))
+    # # plt.show()
 
-    for i, ax in enumerate(axs):
-        ax.set_title("Cluster: " + str(i))
+    # #SOM
+    # logging.info('Staging SOM')
+    # xSOM = np.load('reducedDims/som/V2.0/SOM.npy').tolist()
 
-    for c, s in zip(SOM_pred, tmpData):
-        axs[c].plot(s, color='black', alpha=.2)
+    # tmpData, xSOM = zip(*random.sample(list(zip(dataset, xSOM)),100))
     
-    fig.tight_layout()
-    plt.savefig(os.path.join('./.figs/' + "KMeans-SOM-real"  + currentTime))
-    # plt.show()
+    # SOM_pred  = cluster(xSOM, 'SOM', k=5)
+    # # save_data = np.array([xSOM, tmpData, SOM_pred])
+    # # np.save(f"./saved_clusters/som/{currentTime}",save_data)
+    
+    # plt.clf()
+    # fig, axs = plt.subplots(5)
+    # wi, hi = fig.get_size_inches()
+    # fig.set_size_inches(wi,hi*2)
+    # fig.suptitle('clusters')
+
+    # for i, ax in enumerate(axs):
+    #     ax.set_title("Cluster: " + str(i))
+
+    # for c, s in zip(SOM_pred, tmpData):
+    #     axs[c].plot(s, color='black', alpha=.2)
+    
+    # fig.tight_layout()
+    # plt.savefig(os.path.join('./.figs/' + "KMeans-SOM-real"  + currentTime))
+    # # plt.show()
     
     #performance
-    performance = performance_for_algorithm('KMeans', xPCA, PCA_pred, xAE, AE_pred, xSOM, SOM_pred)
+    # performance = performance_for_algorithm('KMeans', xPCA, PCA_pred, xAE, AE_pred, xSOM, SOM_pred)
 
 if __name__ == "__main__":
     main()
