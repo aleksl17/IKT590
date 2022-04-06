@@ -13,7 +13,6 @@ def get_all_performance_for_method(x, labels):
     return [sil, dbs, chs]
 
 
-
 def performance_for_algorithm(name, PCAx, PCAy, AEx, AEy, SOMx, SOMy, saveFig = True):
     currentTime = str(int(time.time()))
 
