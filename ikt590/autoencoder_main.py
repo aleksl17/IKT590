@@ -10,6 +10,12 @@ import time
 import sys
 import os
 import logging
+<<<<<<< HEAD
+=======
+
+# Disables GPU
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+>>>>>>> 1e343903abb8418f423c24879fad4f029e202743
 
 # helper_folder = "ikt590/autoencoder"
 
@@ -30,7 +36,11 @@ def main():
     #     data = interpolate.interpolation(csvData)
     #     for i in range(len(data)-sample_size):
     #         dataset.append(data[i:i + sample_size])
+<<<<<<< HEAD
     meta, dataset = data_manipulation.read_dataset(datasetFile='./datasets/dataset.json')
+=======
+    meta, dataset = data_manipulation.read_dataset(datasetFile='./datasets/V3.0/dataset.json')
+>>>>>>> 1e343903abb8418f423c24879fad4f029e202743
 
     x = []
     # dataset = random.sample(dataset, 10000)
@@ -44,9 +54,15 @@ def main():
     x = np.array(x)
 
     # model = load_model(f"{helper_folder}/encoder")
+<<<<<<< HEAD
     model = load_model('models/encoder')
     model.build()
     model.compile(run_eagerly=True)
+=======
+    model = load_model('models/V3.0/encoder')
+    # model.build()
+    # model.compile(run_eagerly=True)
+>>>>>>> 1e343903abb8418f423c24879fad4f029e202743
 
     print("Before predict")
     logging.debug("Before predict")

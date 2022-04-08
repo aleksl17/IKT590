@@ -32,7 +32,11 @@ def main():
     
     dims = 3
 
+<<<<<<< HEAD
     meta, dataset = data_manipulation.read_dataset(datasetFile='./datasets/dataset.json')
+=======
+    meta, dataset = data_manipulation.read_dataset(datasetFile='./datasets/V3.0/dataset.json')
+>>>>>>> 1e343903abb8418f423c24879fad4f029e202743
     # dataset = random.sample(dataset, 10000)
     x = np.asarray(dataset)
 
@@ -40,12 +44,22 @@ def main():
     # x = data()
 
     x = StandardScaler().fit_transform(x)
+<<<<<<< HEAD
     print("Before reduce")
     logging.debug("Before reduce")
     som = reduce(x)
     print("After reduce")
     logging.debug("After reduce")
     
+=======
+    
+    print("Before reduce")
+    logging.debug("Before reduce")
+    som = reduce(x)
+    print("After reduce")
+    logging.debug("After reduce")
+    
+>>>>>>> 1e343903abb8418f423c24879fad4f029e202743
     # ax = plt.axes(projection='3d')
     # for point in som:
     #     ax.scatter3D(point[0],point[1],point[2])

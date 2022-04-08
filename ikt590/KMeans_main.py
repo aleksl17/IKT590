@@ -1,5 +1,5 @@
 from cProfile import label
-from performance import performance_for_algorithm
+from helpers.performance import performance_for_algorithm
 import helpers.data_manipulation as data_manipulation
 from sklearn.cluster import KMeans
 import matplotlib.pyplot as plt

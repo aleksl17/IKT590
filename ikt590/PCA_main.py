@@ -31,7 +31,11 @@ def main():
     dims = 3
 
     currentTime = str(int(time.time()))
+<<<<<<< HEAD
     meta, x = data_manipulation.read_dataset(datasetFile='./datasets/dataset.json')
+=======
+    meta, x = data_manipulation.read_dataset(datasetFile='./datasets/V3.0/dataset.json')
+>>>>>>> 1e343903abb8418f423c24879fad4f029e202743
     # x = random.sample(x, 10000)
     # logger.debug(x)
     x = StandardScaler().fit_transform(x)
@@ -40,6 +44,7 @@ def main():
     pc = reduce(x, n_components=dims)
     print("After reduce")
     logger.debug("After reduce")
+<<<<<<< HEAD
 
     # if not os.path.exists('results'):
     #     os.makedirs('results')
@@ -60,6 +65,28 @@ def main():
     #    
     #    plt.savefig(f'results/pcaResults/pca_{currentTime}')
 
+=======
+
+    # if not os.path.exists('results'):
+    #     os.makedirs('results')
+    # if not os.path.exists('results/pcaResults'):
+    #     os.makedirs('results/pcaResults')
+
+    # if dims == 2:
+    #    for point in pc:
+    #        plt.scatter(point[0],point[1])
+    #    
+    #    plt.savefig(f'results/pcaResults/pca_{currentTime}')
+    # if dims == 3:
+    #    ax = plt.axes(projection='3d')
+    #    for point in pc:
+    #        ax.scatter3D(point[0],point[1],point[2])
+    #    
+    #    plt.savefig(f'results/pcaResults/pca_{currentTime}')
+
+    if not os.path.exists('reducedDims/pca'):
+        os.makedirs('reducedDims/pca')
+>>>>>>> 1e343903abb8418f423c24879fad4f029e202743
     np.save(f'reducedDims/pca/{currentTime}', pc)
     print("Done!")
 
