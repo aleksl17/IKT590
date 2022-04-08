@@ -16,9 +16,20 @@ def get_all_performance_for_method(x, labels):
 def performance_for_algorithm(name, PCAx, PCAy, AEx, AEy, SOMx, SOMy, saveFig = True):
     currentTime = str(int(time.time()))
 
-    PCA = get_all_performance_for_method(PCAx, PCAy)
-    AE = get_all_performance_for_method(AEx, AEy)
-    SOM = get_all_performance_for_method(SOMx, SOMy)
+    if max(PCAy) == 0:
+        PCA = 0
+    else:
+        PCA = get_all_performance_for_method(PCAx, PCAy)
+
+    if max(AEy) == 0:
+        AE = 0
+    else: 
+        AE = get_all_performance_for_method(AEx, AEy)
+
+    if max(SOMy) == 0:
+        SOM = 0
+    else:
+        SOM = get_all_performance_for_method(SOMx, SOMy)
 
     scores = ['Silhouette', 'Davies Bouldin', 'Calinksi Harabasz']
 
