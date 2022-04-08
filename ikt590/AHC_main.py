@@ -1,6 +1,5 @@
 from sklearn.cluster import AgglomerativeClustering
 import helpers.data_manipulation as data_manipulation
-from performance import performance_for_algorithm
 from scipy.cluster.hierarchy import dendrogram
 import matplotlib.pyplot as plt
 import numpy as np
@@ -8,6 +7,8 @@ import logging
 import random
 import time
 import os
+
+from helpers.performance import performance_for_algorithm
 
 def main():
     # Initialize logging

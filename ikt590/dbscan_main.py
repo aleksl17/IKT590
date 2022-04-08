@@ -19,7 +19,7 @@ def main():
     logFile = os.path.join('./.logs/' + currentTime + '.log')
     logging.basicConfig(filename=logFile, format='%(asctime)s %(levelname)s %(name)-8s %(message)s', datefmt='%Y-%m-%d %H:%M:%S', level=logging.DEBUG)
     logger = logging.getLogger(__name__)
-
+    
     def dbscan(x, eps=0.5, min_samples=5):
         dbscan = DBSCAN(eps=eps, min_samples=min_samples)
 
