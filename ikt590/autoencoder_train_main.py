@@ -16,8 +16,8 @@ def main():
     # Variables
     batch_size = 10000
     batch_epoch = 100
-    batches = 10
-    epochs = 250
+    batches = 1
+    epochs = 400
     sample_size = 40
     output_size = 3
     load_old_models = False
@@ -26,7 +26,7 @@ def main():
     dataset = []
     x = []
 
-    meta, dataset = data_manipulation.read_dataset(datasetFile='datasets/V2.0/dataset.json')
+    meta, dataset = data_manipulation.read_dataset(datasetFile='datasets/V3.0/dataset.json')
 
     dataset = np.asarray(dataset)
 

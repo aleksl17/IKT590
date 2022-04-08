@@ -32,7 +32,7 @@ def main():
     
     dims = 3
 
-    meta, dataset = data_manipulation.read_dataset(datasetFile='./datasets/V2.0/dataset.json')
+    meta, dataset = data_manipulation.read_dataset(datasetFile='./datasets/V3.0/dataset.json')
     # dataset = random.sample(dataset, 10000)
     x = np.asarray(dataset)
 
