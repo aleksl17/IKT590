@@ -87,7 +87,7 @@ def main():
     plt.savefig(os.path.join('./.figs/' + "DBSCAN-" + 'PCA' + '-' + currentTime))
     plt.clf()
     # # xPCA = random.sample(xPCA, 10000)
-    colors = ['dimgray','saddlebrown0','darkgreen','olive','darkslateblue','darkcyan','darkblue','darkseagreen','darkmagenta','maroon','red','darkorange','gold','lime','blueviolet','springgreen','crimson','aqua','deepskyblue','blue','greenyellow','lightsteelblue','fuchsia','dodgerblue','khaki','salmon','lightgreen','deeppink','mediumslateblue','violet','lightpink']
+    colors = ['dimgray','saddlebrown','darkgreen','olive','darkslateblue','darkcyan','darkblue','darkseagreen','darkmagenta','maroon','red','darkorange','gold','lime','blueviolet','springgreen','crimson','aqua','deepskyblue','blue','greenyellow','lightsteelblue','fuchsia','dodgerblue','khaki','salmon','lightgreen','deeppink','mediumslateblue','violet','lightpink']
     PCA_pred = cluster(xPCA, 'pca', 0.1, 1)
     for point, c in zip(xPCA, PCA_pred):
         if c >= len(colors):
