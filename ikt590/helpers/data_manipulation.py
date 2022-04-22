@@ -133,7 +133,7 @@ def create_dataset(inputDirectory='./signals/', outputDirectory='./.tmpData/', s
         rFileHandle.write(json.dumps(referenceList))
 
 
-def read_dataset(datasetFile='datasets/dataset.json', returnType='list'):
+def read_dataset(datasetFile='datasets/V2.0/dataset.json', returnType='list'):
     """Reads data from file and returns it"""
 
     # Variables
