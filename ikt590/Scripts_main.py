@@ -1,9 +1,11 @@
 import logging
 import time
 import os
+import pandas
 
 import helpers.data_import as data_import
 import helpers.data_manipulation as data_manipulation
+import helpers.data_fft as data_fft
 
 
 def main():
@@ -23,8 +25,11 @@ def main():
     # print(idd)
 
     # Create dataset from local data files
-    dmc = data_manipulation.create_dataset()
-    print(dmc)
+    # dmc = data_manipulation.create_dataset()
+    # print(dmc)
+
+    # fft = data_fft.fourier_transform(pandas.read_csv("./signals/2f96cc4c-5ad4-6b3d-234c-e1073e85bd95.csv"))
+    # print(fft)
 
     # Read dataset from local dataset files
     # dmr = data_manipulation.read_dataset()
