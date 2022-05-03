@@ -16,6 +16,8 @@ def main():
     
     # Variables
     inputDirectory='./signals/'
+    logPerFile = True
+    outlierMultiplier = 3
     timestampDataList = []
     valueDataList = []
     timeGapsList = []
@@ -25,6 +27,8 @@ def main():
     valueMedianList = []
     standardDeviationList = []
     varianceList = []
+    valueMaxList = []
+    valueMinList = []
     totalRows = 0
     tmpX = 0
     tmpY = 0
@@ -47,36 +51,49 @@ def main():
                 end = time.mktime(datetime.strptime(timestampData[i+1],'%Y-%m-%dT%H:%M:%S').timetuple())
                 timeGaps.append(end - start)
             timeGapsList.extend(timeGaps)
-            logging.info(f"{fileName} - Highest Time Gap: {max(timeGaps)}")
-            logging.info(f"{fileName} - Lowest Time Gap: {min(timeGaps)}")
             
             # Per file metadata
+            # Time Gap Mean
             timeGapsMean = numpy.mean(timeGaps)
             timeGapsMeanList.append(timeGapsMean)
-            logging.info(f"{fileName} - Time Gap Mean: {timeGapsMean}")
+            # Time Gap Median
             timeGapsMedian = numpy.median(timeGaps)
             timeGapsMedianList.append(timeGapsMedian)
-            logging.info(f"{fileName} - Time Gap Median: {timeGapsMedian}")
+            # Value Max
             valueMax = max(valueData)
-            logging.info(f"{fileName} - Highest Value: {valueMax}")
+            valueMaxList.append(valueMax)
+            # Value Min
             valueMin = min(valueData)
-            logging.info(f"{fileName} - Lowest Value: {valueMin}")
+            valueMinList.append(valueMin)
+            # Value Mean
             valueMean = numpy.mean(valueData)
             valueMeanList.append(valueMean)
-            logging.info(f"{fileName} - Value Mean: {valueMean}")
+            # Value Median
             valueMedian = numpy.median(valueData)
             valueMedianList.append(valueMedian)
-            logging.info(f"{fileName} - Value Median: {valueMedian}")
+            # Value Standard Deviation
             standardDeviation = numpy.std(valueData)
             standardDeviationList.append(standardDeviation)
-            logging.info(f"{fileName} - Standard Deviation: {standardDeviation}")
+            # Value Variance
             variance = numpy.var(valueData)
             varianceList.append(variance)
-            logging.info(f"{fileName} - Variance: {variance}")
-            outlierMultiplier = 3
+            # Vlaue "Outliers"
             outliers = [value for value in valueData if value > outlierMultiplier*valueMedian]
             outliersNum = len(outliers)
-            logging.info(f"{fileName} - Number of outliers with {outlierMultiplier}x multiplier: {outliersNum}")
+            
+            if logPerFile:
+                # Logging
+                logging.info(f"{fileName} - Highest Time Gap: {max(timeGaps)}")
+                logging.info(f"{fileName} - Lowest Time Gap: {min(timeGaps)}")
+                logging.info(f"{fileName} - Time Gap Mean: {timeGapsMean}")
+                logging.info(f"{fileName} - Time Gap Median: {timeGapsMedian}")
+                logging.info(f"{fileName} - Highest Value: {valueMax}")
+                logging.info(f"{fileName} - Lowest Value: {valueMin}")
+                logging.info(f"{fileName} - Value Mean: {valueMean}")
+                logging.info(f"{fileName} - Value Median: {valueMedian}")
+                logging.info(f"{fileName} - Standard Deviation: {standardDeviation}")
+                logging.info(f"{fileName} - Variance: {variance}")
+                logging.info(f"{fileName} - Number of outliers with {outlierMultiplier}x multiplier: {outliersNum}")
 
             # Total metadata tmp
             tmpX += timeGapsMean * len(timeGaps)
@@ -85,16 +102,23 @@ def main():
             totalOutliers += outliersNum
 
     # Total metadata
-    # totalTimeGapsMean = tmpX/tmpY
-    totalTimeGapsMean = numpy.mean(timeGapsList)
-    logging.info(f"Total Time Gap Mean: {totalTimeGapsMean}")
-    totalTimeGapsMedian = numpy.median(timeGapsList)
-    logging.info(f"Total Time Gap Median: {totalTimeGapsMedian}")
+    logging.info(f"Total Rows: {totalRows}")
     totalValueMean = numpy.mean(valueDataList)
     logging.info(f"Total Value Mean: {totalValueMean}")
     totalValueMedian = numpy.median(valueDataList)
     logging.info(f"Total Value Median: {totalValueMedian}")
-    logging.info(f"Total Rows: {totalRows}")
+    totalValueMax = (max(valueMaxList))
+    logging.info(f"Total Value Max: {totalValueMax}")
+    totalValueMin = (min(valueMinList))
+    logging.info(f"Total Value Max: {totalValueMin}")
+    totalValueDeviation = numpy.std(valueDataList)
+    logging.info(f"Total Value Standard Deviation: {totalValueDeviation}")
+    totalValueVariance = numpy.var(valueDataList)
+    logging.info(f"Total Value Variance: {totalValueVariance}")
+    totalTimeGapsMean = numpy.mean(timeGapsList)
+    logging.info(f"Total Time Gap Mean: {totalTimeGapsMean}")
+    totalTimeGapsMedian = numpy.median(timeGapsList)
+    logging.info(f"Total Time Gap Median: {totalTimeGapsMedian}")
     logging.info(f"Total Outliers: {totalOutliers}")
     outlierPercentage = (totalOutliers/totalRows)*100
     logging.info(f"Outliers Percentage: {outlierPercentage}%")
