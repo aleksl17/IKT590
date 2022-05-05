@@ -25,6 +25,13 @@ def main():
     def reducedDimsMakeFig(reducedDimsPath, RDType, figDir='./.figs/'):
         reducedDim = numpy.load(reducedDimsPath)
         numpy.random.shuffle(reducedDim)
+        print(f"length: {len(reducedDim)}")
+        print(f"max: {max(reducedDim[:, 0])}")
+        print(f"max: {max(reducedDim[:, 1])}")
+        print(f"max: {max(reducedDim[:, 2])}")
+        print(f"min: {min(reducedDim[:, 0])}")
+        print(f"min: {min(reducedDim[:, 1])}")
+        print(f"min: {min(reducedDim[:, 2])}")
         plt.clf()
         ax = plt.axes(projection='3d')
         for x, y, z in reducedDim[:1000]:
@@ -41,8 +48,8 @@ def main():
     # dmc = data_manipulation.create_dataset()
     # print(dmc)
 
-    # fft = data_fft.fourier_transform(pandas.read_csv("./signals/2f96cc4c-5ad4-6b3d-234c-e1073e85bd95.csv"))
-    # print(fft)
+    fft = data_fft.fourier_transform(pandas.read_csv("./signals/109c1f12-7f98-15af-be50-48d1ccf55d08.csv"))
+    print(fft)
 
     # Reduced dims figures
     # rdmf_ae = reducedDimsMakeFig('reducedDims/autoencoder/V2.0/autoencoder.npy', 'AE')
