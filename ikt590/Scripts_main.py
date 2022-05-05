@@ -1,12 +1,15 @@
+from matplotlib import projections
+import matplotlib.pyplot as plt
 import logging
 import time
+import random
 import os
 import pandas
+import numpy
 
 import helpers.data_import as data_import
 import helpers.data_manipulation as data_manipulation
 import helpers.data_fft as data_fft
-
 
 def main():
     # Initialize logging
@@ -18,6 +21,16 @@ def main():
     
     logging.info('Started')
     ################ ======== Functions/code goes below here ======== ################
+
+    def reducedDimsMakeFig(reducedDimsPath, RDType, figDir='./.figs/'):
+        reducedDim = numpy.load(reducedDimsPath)
+        numpy.random.shuffle(reducedDim)
+        plt.clf()
+        ax = plt.axes(projection='3d')
+        for x, y, z in reducedDim[:1000]:
+            ax.scatter(x, y, z, color=numpy.random.rand(3,))
+        plt.title(f'Reduced Dimensions from {RDType}')
+        plt.savefig(os.path.join(figDir + RDType + '-' + currentTime))
     
     # Download data via API if .localData folder is empty
     #import_data.import_data(signalFrom="2021-01-01T01:00:00.000Z", signalTo="2022-01-01T01:00:00.000Z")
@@ -30,6 +43,11 @@ def main():
 
     # fft = data_fft.fourier_transform(pandas.read_csv("./signals/2f96cc4c-5ad4-6b3d-234c-e1073e85bd95.csv"))
     # print(fft)
+
+    # Reduced dims figures
+    # rdmf_ae = reducedDimsMakeFig('reducedDims/autoencoder/V2.0/autoencoder.npy', 'AE')
+    # rdmf_pca = reducedDimsMakeFig('reducedDims/pca/V2.0/pca.npy', 'PCA')
+    # rdmf_som = reducedDimsMakeFig('reducedDims/som/V2.0/som.npy', 'SOM')
 
     # Read dataset from local dataset files
     # dmr = data_manipulation.read_dataset()
