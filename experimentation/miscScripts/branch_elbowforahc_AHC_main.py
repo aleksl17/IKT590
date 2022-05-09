@@ -1,6 +1,6 @@
 from sklearn.cluster import AgglomerativeClustering
 from sklearn.metrics import silhouette_score
-#from performance import performance_for_algorithm
+from performance import performance_for_algorithm
 from scipy.cluster.hierarchy import dendrogram
 import matplotlib.pyplot as plt
 import numpy as np
@@ -23,7 +23,7 @@ def main():
         ahc = AgglomerativeClustering(n_clusters=k, distance_threshold=None)
         return ahc.fit_predict(x), ahc
     
-    def cluster(x, reduction, k = 3, figDir='./.figs/'):
+    def cluster(x, reduction, k, figDir='./.figs/'):
         logger.debug(f'AHC for {reduction}')
         dbscan_pred, cModel = AHC(x, k)
 
@@ -43,8 +43,8 @@ def main():
         plt.savefig(os.path.join(figDir + "Hierarchical-" + reduction + '-' + currentTime))
         plt.clf()
 
-        #return dbscan_pred, cModel
-        return silhouette_score(x, dbscan_pred) # Used only for elbow method
+        return dbscan_pred, cModel
+        #return silhouette_score(x, dbscan_pred) # Used only for elbow method
 
 
     def plot_dendrogram(model, **kwargs):
@@ -71,7 +71,7 @@ def main():
     
 
     def elbow_method(x, reduction):
-        max_k = 30
+        max_k = 10
         scores = []
         for k in range(2,max_k):
             scores.append(cluster(x, reduction, k))
@@ -83,26 +83,26 @@ def main():
 
     #PCA
     logging.info('Staging PCA')
-    xPCA = np.load('reducedDims/pca/V2.0/pca.npy').tolist()
-    xPCA = random.sample(xPCA, 10000*5)
-    PCA_pred = elbow_method(xPCA, 'pca') # Used only for elbow method
-    #PCA_pred, PCA_model = cluster(xPCA, 'pca', k=6) # 6 clusters
+    xPCA = np.load('reducedDims/pca/1647943391.npy').tolist()
+    xPCA = random.sample(xPCA, 10000)
+    #PCA_pred = elbow_method(xPCA, 'pca') # Used only for elbow method
+    PCA_pred, PCA_model = cluster(xPCA, 'pca', k=6) # 6 clusters
     # plot_dendrogram(PCA_model, truncate_mode='level', p=3)
 
     #Autoencoder
     logging.info('Staging AE')
-    xAE = np.load('reducedDims/autoencoder/V2.0/autoencoder.npy').tolist()
-    xAE = random.sample(xAE, 10000*5)
-    AE_pred = elbow_method(xAE, 'autoencoder') # Used only for elbow method
-    #AE_pred, AE_model = cluster(xAE, 'autoencoder', k=4) # 4 clusters
+    xAE = np.load('reducedDims/autoencoder/1648539976.npy').tolist()
+    xAE = random.sample(xAE, 10000)
+    #AE_pred = elbow_method(xAE, 'autoencoder') # Used only for elbow method
+    AE_pred, AE_model = cluster(xAE, 'autoencoder', k=4) # 4 clusters
     # plot_dendrogram(AE_model, truncate_mode='level', p=3)
 
     #SOM
     logging.info('Staging SOM')
-    xSOM = np.load('reducedDims/som/V2.0/som.npy').tolist()
-    xSOM = random.sample(xSOM, 10000*5)
-    SOM_pred  = elbow_method(xSOM, 'SOM') # Used only for elbow method
-    #SOM_pred, SOM_model  = cluster(xSOM, 'SOM', k=5) # 5 or 8 clusters
+    xSOM = np.load('reducedDims/som/1647943531.npy').tolist()
+    xSOM = random.sample(xSOM, 10000)
+    #SOM_pred  = elbow_method(xSOM, 'SOM') # Used only for elbow method
+    SOM_pred, SOM_model  = cluster(xSOM, 'SOM', k=5) # 5 or 8 clusters
     # plot_dendrogram(SOM_model, truncate_mode='level', p=3)
 
     #performance = performance_for_algorithm('AHC', xPCA, PCA_pred, xAE, AE_pred, xSOM, SOM_pred)
