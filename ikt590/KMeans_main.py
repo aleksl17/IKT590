@@ -1,11 +1,13 @@
-from performance import performance_for_algorithm
-from sklearn.cluster import KMeans
 import matplotlib.pyplot as plt
 import numpy as np
 import random
 import logging
 import time
 import os
+
+from sklearn.cluster import KMeans
+
+from helpers.performance import performance_for_algorithm
 
 
 def main():
