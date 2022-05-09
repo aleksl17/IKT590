@@ -1,5 +1,6 @@
 from sklearn.cluster import AgglomerativeClustering
-import helpers.data_manipulation as data_manipulation
+from sklearn.metrics import silhouette_score
+#from performance import performance_for_algorithm
 from scipy.cluster.hierarchy import dendrogram
 import matplotlib.pyplot as plt
 import numpy as np
@@ -7,8 +8,6 @@ import logging
 import random
 import time
 import os
-
-from helpers.performance import performance_for_algorithm
 
 def main():
     # Initialize logging
@@ -24,7 +23,7 @@ def main():
         ahc = AgglomerativeClustering(n_clusters=k, distance_threshold=None)
         return ahc.fit_predict(x), ahc
     
-    def cluster(x, reduction, k, figDir='./.figs/'):
+    def cluster(x, reduction, k = 3, figDir='./.figs/'):
         logger.debug(f'AHC for {reduction}')
         dbscan_pred, cModel = AHC(x, k)
 
@@ -44,7 +43,8 @@ def main():
         plt.savefig(os.path.join(figDir + "Hierarchical-" + reduction + '-' + currentTime))
         plt.clf()
 
-        return dbscan_pred, cModel
+        #return dbscan_pred, cModel
+        return silhouette_score(x, dbscan_pred) # Used only for elbow method
 
 
     def plot_dendrogram(model, **kwargs):
@@ -68,83 +68,44 @@ def main():
         dendrogram(linkage_matrix, **kwargs)
         plt.show()
         plt.clf
-
-    meta, dataset = data_manipulation.read_dataset(datasetFile='datasets/V2.0/dataset.json')
     
+
+    def elbow_method(x, reduction):
+        max_k = 30
+        scores = []
+        for k in range(2,max_k):
+            scores.append(cluster(x, reduction, k))
+
+        plt.plot(scores)
+        plt.show()
+        plt.clf()
+
 
     #PCA
     logging.info('Staging PCA')
     xPCA = np.load('reducedDims/pca/V2.0/pca.npy').tolist()
-    xPCA = random.sample(xPCA, 10000)
-    tmpData, xPCA = zip(*random.sample(list(zip(dataset, xPCA)),100))
-    PCA_pred, PCA_model = cluster(xPCA, 'pca', k=6)
+    xPCA = random.sample(xPCA, 10000*5)
+    PCA_pred = elbow_method(xPCA, 'pca') # Used only for elbow method
+    #PCA_pred, PCA_model = cluster(xPCA, 'pca', k=6) # 6 clusters
     # plot_dendrogram(PCA_model, truncate_mode='level', p=3)
-
-    plt.clf()
-    fig, axs = plt.subplots(6)
-    wi, hi = fig.get_size_inches()
-    fig.set_size_inches(wi,hi*2)
-    fig.suptitle('clusters')
-
-    for i, ax in enumerate(axs):
-        ax.set_title("Cluster: " + str(i))
-
-    for c, s in zip(PCA_pred, tmpData):
-        axs[c].plot(s, color='black', alpha=.2)
-    
-    fig.tight_layout()
-    plt.savefig(os.path.join('./.figs/' + "AHC-PCA-real"  + currentTime))
-
 
     #Autoencoder
     logging.info('Staging AE')
     xAE = np.load('reducedDims/autoencoder/V2.0/autoencoder.npy').tolist()
-    xAE = random.sample(xAE, 10000)
-    tmpData, xAE = zip(*random.sample(list(zip(dataset, xAE)),100))
-    AE_pred, AE_model = cluster(xAE, 'autoencoder', k=4)
+    xAE = random.sample(xAE, 10000*5)
+    AE_pred = elbow_method(xAE, 'autoencoder') # Used only for elbow method
+    #AE_pred, AE_model = cluster(xAE, 'autoencoder', k=4) # 4 clusters
     # plot_dendrogram(AE_model, truncate_mode='level', p=3)
-
-    plt.clf()
-    fig, axs = plt.subplots(4)
-    wi, hi = fig.get_size_inches()
-    fig.set_size_inches(wi,hi*2)
-    fig.suptitle('clusters')
-
-    for i, ax in enumerate(axs):
-        ax.set_title("Cluster: " + str(i))
-
-    for c, s in zip(AE_pred, tmpData):
-        axs[c].plot(s, color='black', alpha=.2)
-    
-    fig.tight_layout()
-    plt.savefig(os.path.join('./.figs/' + "AHC-AE-real"  + currentTime))
-
 
     #SOM
     logging.info('Staging SOM')
     xSOM = np.load('reducedDims/som/V2.0/som.npy').tolist()
-    xSOM = random.sample(xSOM, 10000)
-    tmpData, xSOM = zip(*random.sample(list(zip(dataset, xSOM)),100))
-    SOM_pred, SOM_model  = cluster(xSOM, 'SOM', k=5) # 5 or 8
+    xSOM = random.sample(xSOM, 10000*5)
+    SOM_pred  = elbow_method(xSOM, 'SOM') # Used only for elbow method
+    #SOM_pred, SOM_model  = cluster(xSOM, 'SOM', k=5) # 5 or 8 clusters
     # plot_dendrogram(SOM_model, truncate_mode='level', p=3)
 
-    plt.clf()
-    fig, axs = plt.subplots(5)
-    wi, hi = fig.get_size_inches()
-    fig.set_size_inches(wi,hi*2)
-    fig.suptitle('clusters')
-
-    for i, ax in enumerate(axs):
-        ax.set_title("Cluster: " + str(i))
-
-    for c, s in zip(SOM_pred, tmpData):
-        axs[c].plot(s, color='black', alpha=.2)
-    
-    fig.tight_layout()
-    plt.savefig(os.path.join('./.figs/' + "AHC-SOM-real"  + currentTime))
-
-    # Performance
-    performance = performance_for_algorithm('AHC', xPCA, PCA_pred, xAE, AE_pred, xSOM, SOM_pred)
+    #performance = performance_for_algorithm('AHC', xPCA, PCA_pred, xAE, AE_pred, xSOM, SOM_pred)
 
 if __name__ == "__main__":
     main()
