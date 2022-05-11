@@ -20,7 +20,6 @@ def main():
     logger = logging.getLogger(__name__)
 
     def AHC(x, k):
-        # ahc = AgglomerativeClustering(n_clusters=n_clusters, compute_full_tree=True)
         ahc = AgglomerativeClustering(n_clusters=k, distance_threshold=None)
         return ahc.fit_predict(x), ahc
     
@@ -34,20 +33,6 @@ def main():
         colors = ['darkslategray','maroon', 'darkgreen', 'darkkhaki', 'darkblue', 'red', 'darkturquoise', 'orange', 'yellow', 'lime', 'mediumspringgreen', 'blue', 'thistle', 'fuchsia', 'dodgerblue', 'deeppink']
         
         ax = plt.axes(projection='3d')
-        # for point, c in zip(x, dbscan_pred):
-        #     if c > len(colors):
-        #         logger.warning("Max colors reached! Consider adding more colors.")
-        #         c = len(colors)-1
-        #     ax.scatter3D(point[0], point[1], point[2], c=colors[c], label = c)
-
-        #     if c > 0:
-        #         ax.scatter3D(point[0], point[1], point[2], c=colors[c], label = c)
-        
-        # logger.debug("Loading Figure")
-        # plt.title(f'Hierarchical Clustering on {reduction}')
-        # ax.legend()
-        # plt.savefig(os.path.join(figDir + "Hierarchical-" + reduction + '-' + currentTime))
-        # plt.clf()
 
         for i in range(k):
             scatx = []
@@ -59,9 +44,8 @@ def main():
                     scaty.append(x[j][1])
                     scatz.append(x[j][2])
             
-           
             ax.scatter(scatx,scaty,scatz, color=colors[i])
-        # scatter = ax.scatter3D(x,color=colors[kmeans_pred])
+        
         ax.legend(list(range(k)))
         logger.debug("Loading Figure")
         plt.title(f'AHC on {reduction}')
@@ -98,7 +82,6 @@ def main():
     #PCA
     logging.info('Staging PCA')
     xPCA = np.load('reducedDims/pca/V2.0/pca.npy').tolist()
-    #xPCA = random.sample(xPCA, 10000)
     tmpData, xPCA = zip(*random.sample(list(zip(dataset, xPCA)),1000))
     PCA_pred, PCA_model = cluster(xPCA, 'pca', k=9)
     # plot_dendrogram(PCA_model, truncate_mode='level', p=3)
@@ -107,7 +90,6 @@ def main():
     fig, axs = plt.subplots(9)
     wi, hi = fig.get_size_inches()
     fig.set_size_inches(wi,hi*(9/2))
-    #fig.set_size_inches(wi,hi*2)
     fig.suptitle('clusters')
 
     for i, ax in enumerate(axs):
@@ -123,7 +105,6 @@ def main():
     #Autoencoder
     logging.info('Staging AE')
     xAE = np.load('reducedDims/autoencoder/V2.0/autoencoder.npy').tolist()
-    #xAE = random.sample(xAE, 10000)
     tmpData, xAE = zip(*random.sample(list(zip(dataset, xAE)),1000))
     AE_pred, AE_model = cluster(xAE, 'autoencoder', k=11)
     # plot_dendrogram(AE_model, truncate_mode='level', p=3)
@@ -132,7 +113,6 @@ def main():
     fig, axs = plt.subplots(11)
     wi, hi = fig.get_size_inches()
     fig.set_size_inches(wi,hi*(11/2))
-    #fig.set_size_inches(wi,hi*2)
     fig.suptitle('clusters')
 
     for i, ax in enumerate(axs):
@@ -148,16 +128,14 @@ def main():
     #SOM
     logging.info('Staging SOM')
     xSOM = np.load('reducedDims/som/V2.0/som.npy').tolist()
-    #xSOM = random.sample(xSOM, 10000)
     tmpData, xSOM = zip(*random.sample(list(zip(dataset, xSOM)),1000))
-    SOM_pred, SOM_model  = cluster(xSOM, 'SOM', k=7) # 5 or 8
+    SOM_pred, SOM_model  = cluster(xSOM, 'SOM', k=7)
     # plot_dendrogram(SOM_model, truncate_mode='level', p=3)
 
     plt.clf()
     fig, axs = plt.subplots(7)
     wi, hi = fig.get_size_inches()
     fig.set_size_inches(wi,hi*(7/2))
-    #fig.set_size_inches(wi,hi*2)
     fig.suptitle('clusters')
 
     for i, ax in enumerate(axs):
