@@ -19,11 +19,12 @@ def main():
     logger = logging.getLogger(__name__)
 
     def AHC(x, k):
-        # ahc = AgglomerativeClustering(n_clusters=n_clusters, compute_full_tree=True)
         ahc = AgglomerativeClustering(n_clusters=k, distance_threshold=None)
         return ahc.fit_predict(x), ahc
     
-    def cluster(x, reduction, k = 3, figDir='./.figs/'):
+
+    def cluster(x, reduction, k=3, figDir='./.figs/'):
+        plt.clf()
         logger.debug(f'AHC for {reduction}')
         dbscan_pred, cModel = AHC(x, k)
 
@@ -32,16 +33,23 @@ def main():
         colors = ['darkslategray','maroon', 'darkgreen', 'darkkhaki', 'darkblue', 'red', 'darkturquoise', 'orange', 'yellow', 'lime', 'mediumspringgreen', 'blue', 'thistle', 'fuchsia', 'dodgerblue', 'deeppink']
         
         ax = plt.axes(projection='3d')
-        for point, c in zip(x, dbscan_pred):
-            if c > len(colors):
-                logger.warning("Max colors reached! Consider adding more colors.")
-                c = len(colors)-1
-            ax.scatter3D(point[0], point[1], point[2], c=colors[c])
+
+        for i in range(k):
+            scatx = []
+            scaty = []
+            scatz = []
+            for j in range(len(dbscan_pred)):
+                if dbscan_pred[j] == i:
+                    scatx.append(x[j][0])
+                    scaty.append(x[j][1])
+                    scatz.append(x[j][2])
+            
+            ax.scatter(scatx,scaty,scatz, color=colors[i])
         
+        ax.legend(list(range(k)))
         logger.debug("Loading Figure")
-        plt.title(f'Hierarchical Clustering on {reduction}')
+        plt.title(f'AHC on {reduction}')
         plt.savefig(os.path.join(figDir + "Hierarchical-" + reduction + '-' + currentTime))
-        plt.clf()
 
         #return dbscan_pred, cModel
         return silhouette_score(x, dbscan_pred) # Used only for elbow method
@@ -104,7 +112,7 @@ def main():
     SOM_pred  = elbow_method(xSOM, 'SOM') # Used only for elbow method
     #SOM_pred, SOM_model  = cluster(xSOM, 'SOM', k=5) # 5 or 8 clusters
     # plot_dendrogram(SOM_model, truncate_mode='level', p=3)
-
+    
     #performance = performance_for_algorithm('AHC', xPCA, PCA_pred, xAE, AE_pred, xSOM, SOM_pred)
 
 if __name__ == "__main__":

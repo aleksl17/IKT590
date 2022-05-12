@@ -42,6 +42,7 @@ def performance_for_algorithm(name, PCAx, PCAy, AEx, AEy, SOMx, SOMy, saveFig = 
             ax[i].set_title(scores[i])
         
         plt.savefig(f'.figs/{name}_performance_scores_{currentTime}')
+        #plt.show()
     
     return [PCA, AE, SOM]
 
