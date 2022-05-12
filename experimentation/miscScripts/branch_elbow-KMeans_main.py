@@ -1,3 +1,6 @@
+import sklearn
+from sklearn.cluster import KMeans
+from sklearn.metrics import silhouette_score
 import matplotlib.pyplot as plt
 import numpy as np
 import random
@@ -5,9 +8,7 @@ import logging
 import time
 import os
 
-from sklearn.cluster import KMeans
-
-from helpers.performance import performance_for_algorithm
+from sklearn.utils import shuffle
 
 
 def main():
@@ -38,7 +39,10 @@ def main():
         logger.debug(f'Kmeans for {reduction}')
         kmeans_pred = kMeans(x,k, False)
 
-        colors = ['r','b','g']
+        colors = ['lightcoral', 'red', 'darkred', 'chocolate', 'bisque', 'darkorange', 'gold', 'yellow', 'olive', 'darkgreen', 'lime', 'aquamarine', 'teal', 'cyan', 'lightblue', 'steelblue', 'navy', 'blue', 'indigo', 'violet', 'purple', 'crimson', 'pink']
+        shuffle(colors)
+
+        print(kmeans_pred)
 
         ax = plt.axes(projection='3d')
         for point, c in zip(x, kmeans_pred):
@@ -46,31 +50,37 @@ def main():
         
         logger.debug("Loading Figure")
         plt.title(f'K-Means on {reduction}')
-        plt.savefig(os.path.join(figDir + "KMeans-" + reduction + '-' + currentTime))
+        plt.savefig(os.path.join(figDir + "KMeans-K=" +str(k)+ '-' + reduction + '-' + currentTime))
         plt.clf()
 
-        return kmeans_pred
+        return silhouette_score(x, kmeans_pred)
     
+    def elbow_method(x, reduction):
+        max_k = 10
+        scores = []
+        for k in range(2,max_k):
+            scores.append(cluster(x, reduction, k))
 
+        plt.plot(scores)
+        plt.show()
+        plt.clf()
     #PCA
     logging.info('Staging PCA')
     xPCA = np.load('reducedDims/pca/1644398105.npy').tolist()
     xPCA = random.sample(xPCA, 10000)
-    PCA_pred = cluster(xPCA, 'pca', k=3)
-    
+    PCA_pred = elbow_method(xPCA, 'pca')
     #Autoencoder
     logging.info('Staging AE')
     xAE = np.load('reducedDims/autoencoder/1644405844.npy').tolist()
     xAE = random.sample(xAE, 10000)
-    AE_pred = cluster(xAE, 'autoencoder', k=3)
+    AE_pred = elbow_method(xAE, 'autoencoder')
 
     #SOM
     logging.info('Staging SOM')
     xSOM = np.load('reducedDims/som/1644406419.npy').tolist()
     xSOM = random.sample(xSOM, 10000)
-    SOM_pred  = cluster(xSOM, 'SOM', k=3)
+    SOM_pred  = elbow_method(xSOM, 'SOM')
     
-    performance = performance_for_algorithm('KMeans', xPCA, PCA_pred, xAE, AE_pred, xSOM, SOM_pred)
 
 if __name__ == "__main__":
     main()
